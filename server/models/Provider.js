@@ -24,7 +24,7 @@ const providerSchema = new mongoose.Schema({
     rating: Number,
     comment: String,
     date: { type: Date, default: Date.now }
-  ]},
+  }]},
   totalViews: { type: Number, default: 0 },
   totalCalls: { type: Number, default: 0 },
   averageRating: { type: Number, default: 0 },
