@@ -1,4 +1,5 @@
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const isProd = !window.location.hostname.includes('localhost');
+const API_BASE = isProd ? 'https://newsetu-caow.onrender.com' : (import.meta.env.VITE_API_URL || 'http://localhost:5000');
 
 export const api = {
   signup: `${API_BASE}/api/provider/signup`,
