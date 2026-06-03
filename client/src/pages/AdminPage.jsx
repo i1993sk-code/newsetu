@@ -10,6 +10,7 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({ name: '', businessName: '', phone: '', category: '', district: '', state: 'Jharkhand', address: '', pincode: '', experience: '', priceRange: '', description: '', services: '' });
   const [msg, setMsg] = useState('');
+  const [loginLoading, setLoginLoading] = useState(false);
 
   useEffect(() => { if (authed) loadProviders(); }, [authed]);
 
@@ -17,20 +18,27 @@ export default function AdminPage() {
     setLoading(true);
     try {
       const pw = sessionStorage.getItem('adminPwd');
-      const res = await axios.get(api.adminAll(pw));
+      const res = await axios.get(api.adminAll(pw), { timeout: 10000 });
       if (res.data.success) setProviders(res.data.data);
     } catch {}
     setLoading(false);
   };
 
   const handleLogin = async () => {
-    const res = await axios.post(api.adminLogin, { adminPwd: pwd });
-    if (res.data.success) {
-      sessionStorage.setItem('adminPwd', pwd);
-      setAuthed(true);
-    } else {
-      alert('Wrong password');
+    if (!pwd.trim()) return alert('Password daalein');
+    setLoginLoading(true);
+    try {
+      const res = await axios.post(api.adminLogin, { adminPwd: pwd }, { timeout: 15000 });
+      if (res.data.success) {
+        sessionStorage.setItem('adminPwd', pwd);
+        setAuthed(true);
+      } else {
+        alert('Wrong password');
+      }
+    } catch (err) {
+      alert('Backend se connect nahi ho pa raha. Render pe redeploy ho raha hoga, 1 min me try karein.\nError: ' + (err.message || 'Unknown'));
     }
+    setLoginLoading(false);
   };
 
   const handleLogout = () => { sessionStorage.removeItem('adminPwd'); setAuthed(false); };
@@ -72,9 +80,9 @@ export default function AdminPage() {
         <div className="max-w-sm w-full bg-white rounded-2xl p-6 text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-2">Admin</h1>
           <p className="text-sm text-gray-500 mb-4">Password daalein</p>
-          <input value={pwd} onChange={e => setPwd(e.target.value)} type="password" placeholder="Password" onKeyDown={e => e.key === 'Enter' && handleLogin()}
+          <input value={pwd} onChange={e => setPwd(e.target.value)} type="password" placeholder="Password" onKeyDown={e => e.key === 'Enter' && !loginLoading && handleLogin()}
             className="w-full px-4 py-3 rounded-xl border border-gray-200 mb-3 text-sm outline-none" />
-          <button onClick={handleLogin} className="w-full py-3 bg-gray-900 text-white font-semibold rounded-xl text-sm">Login</button>
+          <button onClick={handleLogin} disabled={loginLoading} className="w-full py-3 bg-gray-900 text-white font-semibold rounded-xl text-sm disabled:opacity-50">{loginLoading ? 'Please wait...' : 'Login'}</button>
         </div>
       </div>
     );
