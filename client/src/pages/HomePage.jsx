@@ -15,6 +15,7 @@ const icons = {
 };
 
 const catImg = {
+  Plumber: 'https://images.unsplash.com/photo-1592210454359-9043f067919b?w=400&q=80',
   Electrician: 'https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=400&q=80',
   Beautician: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80',
   Tutor: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=80',
