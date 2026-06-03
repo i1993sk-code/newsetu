@@ -118,8 +118,11 @@ export default function ProviderPage() {
           </div>
         </div>
 
-        <div className="text-center mt-6">
-          <Link to="/signup" className="text-xs text-gray-400 hover:text-orange-500 transition">
+        <div className="text-center mt-6 space-y-2">
+          <Link to={`/edit/${slug}`} className="block text-xs text-gray-400 hover:text-orange-500 transition">
+            ✏️ Edit your profile
+          </Link>
+          <Link to="/signup" className="block text-xs text-gray-400 hover:text-orange-500 transition">
             NewSetu — Apni free website banayein →
           </Link>
         </div>
