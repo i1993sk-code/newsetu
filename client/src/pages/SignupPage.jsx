@@ -25,55 +25,75 @@ export default function SignupPage() {
   };
 
   return (
-    <div style={{ fontFamily: 'system-ui, sans-serif', maxWidth: 480, margin: '0 auto', padding: '20px' }}>
-      <div style={{ textAlign: 'center', marginBottom: 24 }}>
-        <h1 style={{ color: '#1a1a2e', fontSize: 28, margin: 0 }}>NewSetu</h1>
-        <p style={{ color: '#666', marginTop: 4, fontSize: 14 }}>Apni free website banayein</p>
-      </div>
-
-      {result?.success ? (
-        <div style={{ background: '#e8f5e9', border: '1px solid #4caf50', borderRadius: 12, padding: 24, textAlign: 'center' }}>
-          <div style={{ fontSize: 40, marginBottom: 8 }}>🎉</div>
-          <h2 style={{ color: '#2e7d32', fontSize: 18, margin: 0 }}>Website ready!</h2>
-          <p style={{ fontSize: 14, color: '#555', marginTop: 8 }}>Aapki website:</p>
-          <a href={result.data.website} target="_blank" rel="noopener noreferrer"
-            style={{ fontSize: 18, fontWeight: 700, color: '#1a1a2e', display: 'block', margin: '8px 0' }}>
-            {result.data.website}
-          </a>
-          <p style={{ fontSize: 12, color: '#999' }}>Is link ko copy karein aur share karein!</p>
-          <Link to="/" style={{ display: 'inline-block', marginTop: 12, color: '#1a1a2e', fontWeight: 600, fontSize: 13 }}>← Back to home</Link>
+    <div className="min-h-screen bg-gradient-to-b from-white to-orange-50">
+      <div className="max-w-md mx-auto px-4 pt-16 pb-24">
+        <div className="text-center mb-8">
+          <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">
+            <span className="text-orange-500">New</span>Setu
+          </h1>
+          <p className="text-gray-500 mt-2">Apni free website banayein</p>
         </div>
-      ) : (
-        <form onSubmit={handleSubmit} style={{ background: '#fff', borderRadius: 12, border: '1px solid #eee', padding: 24 }}>
-          <div style={{ marginBottom: 14 }}>
-            <label style={{ fontSize: 12, fontWeight: 600, color: '#555' }}>Name *</label>
-            <input name="name" required value={form.name} onChange={handleChange} style={{ width: '100%', padding: '10px 12px', borderRadius: 8, border: '1px solid #ddd', fontSize: 14, marginTop: 4, boxSizing: 'border-box' }} />
+
+        {result?.success ? (
+          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-8 text-center">
+            <div className="w-16 h-16 rounded-full bg-green-100 mx-auto mb-4 flex items-center justify-center">
+              <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg>
+            </div>
+            <h2 className="text-xl font-bold text-gray-900 mb-2">Website ready! 🎉</h2>
+            <p className="text-sm text-gray-500 mb-4">Aapki website:</p>
+            <a href={result.data.website} target="_blank" rel="noopener noreferrer"
+              className="inline-block px-6 py-3 bg-orange-50 text-orange-600 font-bold rounded-xl border border-orange-200 hover:bg-orange-100 transition mb-4 text-sm">
+              {result.data.website}
+            </a>
+            <p className="text-xs text-gray-400">Is link ko copy karein aur share karein!</p>
+            <Link to="/" className="inline-block mt-6 text-sm text-gray-500 hover:text-orange-500 transition">
+              ← Back to home
+            </Link>
           </div>
-          <div style={{ marginBottom: 14 }}>
-            <label style={{ fontSize: 12, fontWeight: 600, color: '#555' }}>Business Name</label>
-            <input name="businessName" value={form.businessName} onChange={handleChange} style={{ width: '100%', padding: '10px 12px', borderRadius: 8, border: '1px solid #ddd', fontSize: 14, marginTop: 4, boxSizing: 'border-box' }} />
-          </div>
-          <div style={{ marginBottom: 14 }}>
-            <label style={{ fontSize: 12, fontWeight: 600, color: '#555' }}>Phone *</label>
-            <input name="phone" required value={form.phone} onChange={handleChange} style={{ width: '100%', padding: '10px 12px', borderRadius: 8, border: '1px solid #ddd', fontSize: 14, marginTop: 4, boxSizing: 'border-box' }} />
-          </div>
-          <div style={{ marginBottom: 14 }}>
-            <label style={{ fontSize: 12, fontWeight: 600, color: '#555' }}>Category * (e.g. Plumber, Electrician)</label>
-            <input name="category" required value={form.category} onChange={handleChange} style={{ width: '100%', padding: '10px 12px', borderRadius: 8, border: '1px solid #ddd', fontSize: 14, marginTop: 4, boxSizing: 'border-box' }} />
-          </div>
-          <div style={{ marginBottom: 14 }}>
-            <label style={{ fontSize: 12, fontWeight: 600, color: '#555' }}>City *</label>
-            <input name="city" required value={form.city} onChange={handleChange} style={{ width: '100%', padding: '10px 12px', borderRadius: 8, border: '1px solid #ddd', fontSize: 14, marginTop: 4, boxSizing: 'border-box' }} />
-          </div>
-          <div style={{ marginBottom: 20 }}>
-            <label style={{ fontSize: 12, fontWeight: 600, color: '#555' }}>Services (comma separated)</label>
-            <textarea name="services" value={form.services} onChange={handleChange} rows={2} style={{ width: '100%', padding: '10px 12px', borderRadius: 8, border: '1px solid #ddd', fontSize: 14, marginTop: 4, resize: 'vertical', boxSizing: 'border-box' }} />
-          </div>
-          <button type="submit" disabled={loading} style={{ width: '100%', padding: '12px', borderRadius: 8, border: 'none', background: '#1a1a2e', color: '#fff', fontWeight: 700, fontSize: 15, cursor: 'pointer' }}>
-            {loading ? 'Creating...' : 'Free Website Banayein 🚀'}
-          </button>
-        </form>
-      )}
+        ) : (
+          <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 space-y-4">
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Name *</label>
+              <input name="name" required value={form.name} onChange={handleChange} placeholder="Apna naam"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition" />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Business Name</label>
+              <input name="businessName" value={form.businessName} onChange={handleChange} placeholder="Aapke business ka naam"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition" />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Phone *</label>
+              <input name="phone" required value={form.phone} onChange={handleChange} placeholder="Mobile number" type="tel"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition" />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Category *</label>
+              <input name="category" required value={form.category} onChange={handleChange} placeholder="Plumber, Electrician, Tutor..."
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition" />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">City *</label>
+              <input name="city" required value={form.city} onChange={handleChange} placeholder="Aapka city"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition" />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Services (comma separated)</label>
+              <textarea name="services" value={form.services} onChange={handleChange} placeholder="Pipe fitting, Water tank repair, etc." rows={2}
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition resize-none" />
+            </div>
+            <button type="submit" disabled={loading}
+              className="w-full py-3.5 bg-gray-900 hover:bg-gray-800 disabled:bg-gray-400 text-white font-bold rounded-xl transition text-sm shadow-sm">
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+                  Creating...
+                </span>
+              ) : 'Free Website Banayein 🚀'}
+            </button>
+          </form>
+        )}
+      </div>
     </div>
   );
 }
