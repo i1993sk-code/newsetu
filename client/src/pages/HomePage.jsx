@@ -55,7 +55,7 @@ export default function HomePage() {
     }).catch(() => {});
   }, []);
 
-  useEffect(() => { document.title = 'NewSetu - Jharkhand me Plumber, Electrician, Tutor aur service providers dhundhein'; }, []);
+  useEffect(() => { document.title = 'NewSetu - Plumber, Electrician, Tutor aur service providers dhundhein'; }, []);
 
   const filtered = categories.filter(c => {
     if (!search.trim()) return true;
@@ -93,7 +93,7 @@ export default function HomePage() {
             <span className="text-white">best service provider</span>
           </h1>
           <p className="text-gray-400 text-sm sm:text-lg max-w-xl mx-auto mb-8">
-            Plumber, Electrician, Tutor, Mechanic — Jharkhand ke har district me. Free profile, direct contact.
+            Plumber, Electrician, Tutor, Mechanic — apne shehar me. Free profile, direct contact.
           </p>
           <div className="max-w-2xl mx-auto">
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-2 sm:p-3 border border-white/10 shadow-2xl">
@@ -145,7 +145,7 @@ export default function HomePage() {
       <div className="max-w-5xl mx-auto px-4 -mt-8 relative z-10">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {[{ num: '19+', label: 'Service Categories', sub: 'Plumber se Designer tak', icon: '🔧' },
-            { num: '24', label: 'Jharkhand Districts', sub: 'Pura Jharkhand covered', icon: '📍' },
+            { num: '24+', label: 'Districts Covered', sub: 'Har shehar me available', icon: '📍' },
             { num: 'Free', label: 'Profile Registration', sub: 'Zero cost, lifetime free', icon: '✅' }
           ].map((s, i) => (
             <div key={i} className="bg-white rounded-2xl border border-gray-100 p-5 sm:p-6 text-center shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all">
@@ -289,13 +289,13 @@ export default function HomePage() {
           <div className="max-w-5xl mx-auto px-4">
             <div className="text-center mb-8">
               <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900">Kyun NewSetu choose karein?</h2>
-              <p className="text-gray-400 text-sm mt-1">Jharkhand ka apna local service platform</p>
+              <p className="text-gray-400 text-sm mt-1">Aapka apna local service platform</p>
             </div>
             <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {[
                 { icon: '🆓', title: 'Bilkul Free', desc: 'Profile banwana aur search karna dono free' },
                 { icon: '📞', title: 'Direct Contact', desc: 'No middleman, directly provider se baat karein' },
-                { icon: '📍', title: 'Local Providers', desc: 'Sirf aapke Jharkhand ke providers' },
+                { icon: '📍', title: 'Local Providers', desc: 'Sirf aapke shehar ke providers' },
                 { icon: '🛡️', title: 'Safe & Private', desc: 'Phone number privacy controls ke saath' },
               ].map((t, i) => (
                 <div key={i} className="text-center bg-gray-50 rounded-2xl p-6 hover:bg-orange-50 transition-all border border-gray-50 hover:border-orange-100">
@@ -327,7 +327,7 @@ export default function HomePage() {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-8">
             <div>
               <h4 className="text-white font-bold mb-3 text-sm">NewSetu</h4>
-              <p className="text-xs leading-relaxed">Jharkhand ka local service provider platform. Ghar baithe dhundein apne shehar ke best service providers.</p>
+              <p className="text-xs leading-relaxed">Apna local service provider platform. Ghar baithe dhundein apne shehar ke best service providers.</p>
             </div>
             <div>
               <h4 className="text-white font-bold mb-3 text-sm">Quick Links</h4>
