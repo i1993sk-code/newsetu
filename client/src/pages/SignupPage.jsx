@@ -28,7 +28,7 @@ export default function SignupPage() {
     <div className="min-h-screen bg-gradient-to-b from-white to-orange-50">
       <div className="max-w-md mx-auto px-4 pt-16 pb-24">
         <div className="text-center mb-8">
-          <h1 className="text-4xl font-extrabold text-gray-900 tracking-tight">
+          <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
             <span className="text-orange-500">New</span>Setu
           </h1>
           <p className="text-gray-500 mt-2">Apni free website banayein</p>
