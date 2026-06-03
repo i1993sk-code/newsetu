@@ -15,7 +15,7 @@ const icons = {
 };
 
 const catImg = {
-  Plumber: 'https://images.unsplash.com/photo-1592210454359-9043f067919b?w=400&q=80',
+  Plumber: 'https://loremflickr.com/400/300/pipe+plumber',
   Painter: 'https://loremflickr.com/400/300/painter',
   Carpenter: 'https://loremflickr.com/400/300/carpenter',
   'AC Repair': 'https://loremflickr.com/400/300/air+conditioner',
@@ -28,7 +28,7 @@ const catImg = {
   Maid: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&q=80',
   Cook: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=400&q=80',
   Driver: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=400&q=80',
-  'Security Guard': 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=400&q=80',
+  'Security Guard': 'https://loremflickr.com/400/300/security+guard',
   Photographer: 'https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=400&q=80',
   'Event Planner': 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&q=80',
   'Fitness Trainer': 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80',
