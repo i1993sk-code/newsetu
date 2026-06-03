@@ -150,6 +150,14 @@ export default function HomePage() {
             <p className="text-gray-300 text-sm mt-1">Upar categories me se koi choose karein</p>
           </div>
         )}
+
+        <div className="text-center pt-8 pb-4 border-t border-gray-100">
+          <p className="text-xs text-gray-300">
+            Built by <a href="mailto:i1993sk@gmail.com" className="text-gray-400 hover:text-orange-500 transition">Santosh Kumar</a>
+            {' '}— <a href="tel:+917369397993" className="text-gray-400 hover:text-orange-500 transition">+91 7369397993</a>
+          </p>
+          <p className="text-xs text-gray-300 mt-1">Koi help chahiye? Contact karein</p>
+        </div>
       </div>
     </div>
   );
