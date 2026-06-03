@@ -17,9 +17,10 @@ export default function AdminPage() {
   const [form, setForm] = useState({ name: '', businessName: '', phone: '', category: '', district: '', state: 'Jharkhand', address: '', pincode: '', experience: '', priceRange: '', description: '', services: '' });
   const [msg, setMsg] = useState('');
   const [loginLoading, setLoginLoading] = useState(false);
+  const [search, setSearch] = useState('');
 
   useEffect(() => { if (authed) { loadCategories(); } }, [authed]);
-  useEffect(() => { if (authed) loadProviders(); }, [authed, page]);
+  useEffect(() => { if (authed) loadProviders(); }, [authed, page, search]);
 
   const loadCategories = async () => {
     try {
@@ -32,7 +33,7 @@ export default function AdminPage() {
     setLoading(true);
     try {
       const pw = sessionStorage.getItem('adminPwd');
-      const res = await axios.get(api.adminAll(pw, page, 20), { timeout: 10000 });
+      const res = await axios.get(api.adminAll(pw, page, 20, search), { timeout: 10000 });
       if (res.data.success) {
         setProviders(res.data.data);
         setTotalPages(res.data.totalPages || 1);
@@ -108,6 +109,11 @@ export default function AdminPage() {
       await axios.delete(CAT_API + '/' + id + '?adminPwd=' + pw);
       loadCategories();
     } catch {}
+  };
+
+  const handleSearch = (val) => {
+    setSearch(val);
+    setPage(1);
   };
 
   if (!authed) {
@@ -212,8 +218,13 @@ export default function AdminPage() {
         </div>
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
             <h2 className="text-base font-bold text-gray-900">📋 Providers</h2>
+            <div className="flex items-center gap-2">
+              <input value={search} onChange={e => handleSearch(e.target.value)} placeholder="Search name/phone/category..."
+                className="flex-1 sm:w-48 px-3 py-1.5 rounded-lg border border-gray-200 text-xs outline-none" />
+              {search && <button onClick={() => handleSearch('')} className="text-xs text-gray-400 hover:text-gray-600">✕</button>}
+            </div>
             <div className="flex items-center gap-2">
               <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1}
                 className="px-3 py-1.5 bg-gray-100 rounded-lg text-xs disabled:opacity-30 hover:bg-gray-200">&larr; Prev</button>

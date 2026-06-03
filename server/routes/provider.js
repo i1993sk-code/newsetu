@@ -124,8 +124,18 @@ router.get('/admin/all', adminAuth, async (req, res) => {
     const page = Math.max(1, parseInt(req.query.page) || 1);
     const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 20));
     const skip = (page - 1) * limit;
-    const total = await Provider.countDocuments();
-    const providers = await Provider.find().sort({ createdAt: -1 }).skip(skip).limit(limit);
+    const { q } = req.query;
+    let filter = {};
+    if (q) {
+      filter.$or = [
+        { name: { $regex: q, $options: 'i' } },
+        { businessName: { $regex: q, $options: 'i' } },
+        { phone: { $regex: q, $options: 'i' } },
+        { category: { $regex: q, $options: 'i' } },
+      ];
+    }
+    const total = await Provider.countDocuments(filter);
+    const providers = await Provider.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit);
     res.json({ success: true, data: providers, count: providers.length, total, page, totalPages: Math.ceil(total / limit) });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
