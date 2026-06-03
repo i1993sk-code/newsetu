@@ -14,26 +14,26 @@ const icons = {
   'Event Planner': '🎉', 'Fitness Trainer': '💪', 'Web Developer': '💻', Designer: '🎯',
 };
 
-const catBg = {
-  Plumber: 'from-cyan-500 to-blue-600',
-  Electrician: 'from-yellow-500 to-orange-600',
-  Beautician: 'from-pink-500 to-rose-600',
-  Tutor: 'from-violet-500 to-purple-600',
-  CA: 'from-emerald-500 to-teal-600',
-  Lawyer: 'from-indigo-500 to-blue-600',
-  Mechanic: 'from-slate-600 to-gray-700',
-  Painter: 'from-purple-500 to-pink-600',
-  Carpenter: 'from-amber-600 to-orange-700',
-  'AC Repair': 'from-sky-500 to-cyan-600',
-  Cook: 'from-red-500 to-orange-500',
-  Driver: 'from-blue-500 to-indigo-600',
-  Maid: 'from-teal-500 to-emerald-600',
-  'Security Guard': 'from-gray-700 to-slate-800',
-  Photographer: 'from-fuchsia-500 to-violet-600',
-  'Event Planner': 'from-rose-500 to-pink-600',
-  'Fitness Trainer': 'from-lime-500 to-green-600',
-  'Web Developer': 'from-cyan-600 to-blue-700',
-  Designer: 'from-orange-500 to-red-500',
+const catImg = {
+  Plumber: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&q=80',
+  Electrician: 'https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=400&q=80',
+  Beautician: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80',
+  Tutor: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=80',
+  CA: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=400&q=80',
+  Lawyer: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=400&q=80',
+  Mechanic: 'https://images.unsplash.com/photo-1530046339160-ce3e530c7d2f?w=400&q=80',
+  Painter: 'https://images.unsplash.com/photo-1562259929-b4e1fd3aef09?w=400&q=80',
+  Carpenter: 'https://images.unsplash.com/photo-1613665813446-82a78c468a1d?w=400&q=80',
+  'AC Repair': 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400&q=80',
+  Cook: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=400&q=80',
+  Driver: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=400&q=80',
+  Maid: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&q=80',
+  'Security Guard': 'https://images.unsplash.com/photo-1557597774-9d273605dfa9?w=400&q=80',
+  Photographer: 'https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=400&q=80',
+  'Event Planner': 'https://images.unsplash.com/photo-1511578314322-379afb476865?w=400&q=80',
+  'Fitness Trainer': 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&q=80',
+  'Web Developer': 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&q=80',
+  Designer: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&q=80',
 };
 
 const fallbackCats = DEFAULT_CATS.map((name, i) => ({ _id: i, name }));
@@ -208,11 +208,17 @@ export default function HomePage() {
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
               {categories.map(c => (
                 <button key={c._id} onClick={() => { setSearch(c.name); doSearch(c.name); }}
-                  className="group relative overflow-hidden rounded-2xl bg-white border border-gray-100 p-5 text-center hover:shadow-lg hover:-translate-y-1 transition-all">
-                  <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${catBg[c.name] || 'from-orange-400 to-pink-500'} text-white flex items-center justify-center text-xl mx-auto mb-3 shadow-sm group-hover:scale-110 transition-transform`}>
-                    {icons[c.name] || '🔹'}
+                  className="group relative overflow-hidden rounded-2xl bg-white border border-gray-100 hover:shadow-lg hover:-translate-y-1 transition-all">
+                  <div className="relative h-28 sm:h-32 overflow-hidden">
+                    <img src={catImg[c.name] || 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&q=80'}
+                      alt={c.name}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                      loading="lazy" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent"></div>
+                    <div className="absolute bottom-0 left-0 right-0 p-3">
+                      <span className="text-xs font-bold text-white drop-shadow-lg">{c.name}</span>
+                    </div>
                   </div>
-                  <span className="text-xs font-semibold text-gray-700 group-hover:text-orange-600 transition-colors">{c.name}</span>
                 </button>
               ))}
             </div>
