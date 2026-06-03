@@ -125,6 +125,7 @@ export default function AdminPage() {
           <input value={pwd} onChange={e => setPwd(e.target.value)} type="password" placeholder="Password" onKeyDown={e => e.key === 'Enter' && !loginLoading && handleLogin()}
             className="w-full px-4 py-3 rounded-xl border border-gray-200 mb-3 text-sm outline-none" />
           <button onClick={handleLogin} disabled={loginLoading} className="w-full py-3 bg-gray-900 text-white font-semibold rounded-xl text-sm disabled:opacity-50">{loginLoading ? 'Please wait...' : 'Login'}</button>
+          <Link to="/" className="block mt-4 text-xs text-gray-400 hover:text-orange-500 transition">← Back to home</Link>
         </div>
       </div>
     );
