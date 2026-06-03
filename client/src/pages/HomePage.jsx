@@ -16,7 +16,7 @@ const icons = {
 
 const catImg = {
   Plumber: 'https://images.pexels.com/photos/35016079/pexels-photo-35016079.jpeg?auto=compress&cs=tinysrgb&w=400',
-  Painter: 'https://images.pexels.com/photos/6764275/pexels-photo-6764275.jpeg?auto=compress&cs=tinysrgb&w=400',
+  Painter: 'https://images.pexels.com/photos/6050252/pexels-photo-6050252.jpeg?auto=compress&cs=tinysrgb&w=400',
   Carpenter: 'https://images.pexels.com/photos/36866655/pexels-photo-36866655.jpeg?auto=compress&cs=tinysrgb&w=400',
   'AC Repair': 'https://images.pexels.com/photos/33671149/pexels-photo-33671149.jpeg?auto=compress&cs=tinysrgb&w=400',
   Electrician: 'https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=400&q=80',
