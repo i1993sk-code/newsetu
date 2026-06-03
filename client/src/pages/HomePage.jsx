@@ -15,9 +15,9 @@ const icons = {
 };
 
 const catImg = {
-  Plumber: 'https://loremflickr.com/400/300/pipe+plumber',
+  Plumber: 'https://images.pexels.com/photos/35016079/pexels-photo-35016079.jpeg?auto=compress&cs=tinysrgb&w=400',
   Painter: 'https://loremflickr.com/400/300/painter',
-  Carpenter: 'https://loremflickr.com/400/300/carpenter',
+  Carpenter: 'https://images.pexels.com/photos/36866655/pexels-photo-36866655.jpeg?auto=compress&cs=tinysrgb&w=400',
   'AC Repair': 'https://loremflickr.com/400/300/air+conditioner',
   Electrician: 'https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=400&q=80',
   Beautician: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80',
