@@ -151,6 +151,7 @@ export default function ProviderPage() {
         <div className="text-center pt-8 pb-4 border-t border-gray-100 mt-8">
           <p className="text-xs text-gray-300">
             Built by <a href="mailto:i1993sk@gmail.com" className="text-gray-400 hover:text-orange-500 transition">Santosh Kumar</a>
+            {' '}— <a href="tel:+919608354372" className="text-gray-400 hover:text-orange-500 transition">+91 9608354372</a>
           </p>
         </div>
       </div>
