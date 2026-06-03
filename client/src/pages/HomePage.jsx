@@ -82,7 +82,22 @@ export default function HomePage() {
       <div className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1920&q=80")', backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-gray-900/50"></div>
-        <div className="relative max-w-5xl mx-auto px-4 pt-16 pb-20 sm:pt-24 sm:pb-28 text-center">
+        <div className="relative max-w-5xl mx-auto px-4">
+          <div className="flex items-center justify-between py-4 sm:py-5 border-b border-white/10">
+            <Link to="/" className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center text-white font-bold text-sm shadow-lg">NS</div>
+              <span className="text-lg sm:text-xl font-bold tracking-tight">
+                <span className="text-orange-400">New</span><span className="text-white">Setu</span>
+              </span>
+            </Link>
+            <div className="flex items-center gap-3 sm:gap-5">
+              <Link to="/signup" className="text-xs sm:text-sm text-gray-300 hover:text-white transition font-medium">Free Profile</Link>
+              <Link to="/find" className="text-xs sm:text-sm text-gray-300 hover:text-white transition font-medium">Find</Link>
+              <Link to="/signup" className="text-xs sm:text-sm px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl transition shadow-md">Register</Link>
+            </div>
+          </div>
+        </div>
+        <div className="relative max-w-5xl mx-auto px-4 pt-12 pb-20 sm:pt-16 sm:pb-28 text-center">
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-orange-300 text-xs font-semibold px-4 py-1.5 rounded-full mb-6 border border-white/10">
             <span className="w-1.5 h-1.5 bg-orange-400 rounded-full animate-pulse"></span>
             Jharkhand ka pehla local service platform
