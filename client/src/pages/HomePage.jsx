@@ -97,6 +97,25 @@ export default function HomePage() {
       <div className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1920&q=80")', backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-gray-900/50"></div>
+        <style>{`
+          @keyframes float1{0%,100%{transform:translate(0,0) rotate(0deg)}25%{transform:translate(15px,-20px) rotate(5deg)}50%{transform:translate(-10px,-35px) rotate(-3deg)}75%{transform:translate(20px,-15px) rotate(4deg)}}
+          @keyframes float2{0%,100%{transform:translate(0,0) rotate(0deg)}25%{transform:translate(-18px,-15px) rotate(-5deg)}50%{transform:translate(12px,-30px) rotate(3deg)}75%{transform:translate(-15px,-10px) rotate(-4deg)}}
+          @keyframes float3{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(20px,-25px) scale(1.1)}66%{transform:translate(-15px,-10px) scale(.9)}}
+          @keyframes float4{0%,100%{transform:translate(0,0) rotateY(0deg)}50%{transform:translate(-20px,-20px) rotateY(180deg)}}
+          @keyframes bounceSlow{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+          .float-item{position:absolute;opacity:.6;pointer-events:none;z-index:0;font-size:28px}
+          @media(max-width:640px){.float-item{font-size:20px;opacity:.4}}
+        `}</style>
+        <div className="float-item" style={{top:'8%',left:'5%',animation:'float1 6s ease-in-out infinite'}}>🔧</div>
+        <div className="float-item" style={{top:'15%',right:'8%',animation:'float2 7s ease-in-out infinite'}}>⚡</div>
+        <div className="float-item" style={{bottom:'20%',left:'10%',animation:'float3 5s ease-in-out infinite'}}>🎨</div>
+        <div className="float-item" style={{bottom:'25%',right:'5%',animation:'float4 8s ease-in-out infinite'}}>🪚</div>
+        <div className="float-item" style={{top:'40%',left:'3%',animation:'bounceSlow 3s ease-in-out infinite'}}>📚</div>
+        <div className="float-item" style={{top:'50%',right:'3%',animation:'float1 9s ease-in-out infinite'}}>🍳</div>
+        <div className="float-item" style={{top:'70%',left:'6%',animation:'float3 6.5s ease-in-out infinite'}}>🚗</div>
+        <div className="float-item" style={{top:'30%',right:'4%',animation:'bounceSlow 4s ease-in-out infinite 1s'}}>💅</div>
+        <div className="float-item" style={{bottom:'15%',right:'12%',animation:'float2 5.5s ease-in-out infinite'}}>❄️</div>
+        <div className="float-item" style={{top:'60%',left:'8%',animation:'float4 7.5s ease-in-out infinite'}}>📸</div>
         <div className="relative max-w-5xl mx-auto px-4">
           <div className="flex items-center justify-between py-4 sm:py-5 border-b border-white/10">
             <Link to="/" className="flex items-center gap-2.5">
