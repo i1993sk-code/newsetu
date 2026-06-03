@@ -29,7 +29,7 @@ router.post('/signup', async (req, res) => {
       message: 'Provider registered',
       data: {
         ...provider.toObject(),
-        website: `https://${slug}.newsetu.in`
+        website: `https://newsetu.in/provider/${slug}`
       }
     });
   } catch (err) {
