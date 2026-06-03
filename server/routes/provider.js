@@ -108,4 +108,33 @@ router.put('/update/:slug', async (req, res) => {
   }
 });
 
+const ADMIN_PASSWORD = 'newsetu@2024';
+
+function adminAuth(req, res, next) {
+  if (req.query.adminPwd === ADMIN_PASSWORD || req.body?.adminPwd === ADMIN_PASSWORD) return next();
+  res.json({ success: false, message: 'Unauthorized' });
+}
+
+router.post('/admin/login', (req, res) => {
+  res.json({ success: req.body?.adminPwd === ADMIN_PASSWORD });
+});
+
+router.get('/admin/all', adminAuth, async (req, res) => {
+  try {
+    const providers = await Provider.find().sort({ createdAt: -1 });
+    res.json({ success: true, data: providers, count: providers.length });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+router.delete('/admin/delete/:id', adminAuth, async (req, res) => {
+  try {
+    await Provider.findByIdAndDelete(req.params.id);
+    res.json({ success: true, message: 'Deleted' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 module.exports = router;
