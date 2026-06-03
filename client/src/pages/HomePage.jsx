@@ -100,7 +100,7 @@ export default function HomePage() {
         <div className="relative max-w-5xl mx-auto px-4 pt-12 pb-20 sm:pt-16 sm:pb-28 text-center">
           <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-orange-300 text-xs font-semibold px-4 py-1.5 rounded-full mb-6 border border-white/10">
             <span className="w-1.5 h-1.5 bg-orange-400 rounded-full animate-pulse"></span>
-            Jharkhand ka pehla local service platform
+            Pehla local service platform
           </div>
           <h1 className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-tight mb-3">
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-pink-400">Ghar baithe</span>{' '}
