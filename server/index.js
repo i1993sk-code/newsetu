@@ -1,14 +1,26 @@
 require('dotenv').config();
-const http = require('http');
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
 
-const server = http.createServer((req, res) => {
-  res.writeHead(200, { 'Content-Type': 'application/json' });
-  res.end(JSON.stringify({ status: 'ok', message: 'NewSetu API is running' }));
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+app.get(['/', '/api/health'], (req, res) => {
+  res.json({ status: 'ok', message: 'NewSetu API is running' });
 });
 
-const PORT = process.env.PORT || 5000;
-console.log('PORT from env:', process.env.PORT, '| using:', PORT);
+const providerRoutes = require('./routes/provider');
+app.use('/api/provider', providerRoutes);
 
-server.listen(PORT, '0.0.0.0', () => {
+const PORT = process.env.PORT || 5000;
+
+mongoose.connect(process.env.MONGODB_URI)
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.log('MongoDB error:', err));
+
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
