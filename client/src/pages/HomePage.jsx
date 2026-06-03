@@ -48,20 +48,7 @@ export default function HomePage() {
   const [categories, setCategories] = useState(fallbackCats);
   const [focused, setFocused] = useState(false);
   const [featured, setFeatured] = useState([]);
-  const [placeholder, setPlaceholder] = useState('');
   const blurTimer = useRef();
-
-  const placeholders = ['Plumber?', 'Electrician?', 'Painter?', 'Carpenter?', 'Tutor?', 'Mechanic?', 'AC Repair?', 'Cook?', 'Driver?', 'Maid?', 'Beautician?', 'Photographer?', 'Lawyer?', 'CA?'];
-
-  useEffect(() => {
-    let i = 0;
-    const t = setInterval(() => {
-      i = (i + 1) % placeholders.length;
-      setPlaceholder(placeholders[i]);
-    }, 2200);
-    setPlaceholder(placeholders[0]);
-    return () => clearInterval(t);
-  }, []);
 
   useEffect(() => {
     axios.get(CAT_API, { timeout: 5000 }).then(r => { if (r.data.success && r.data.data.length > 0) setCategories(r.data.data); }).catch(() => {});
@@ -130,7 +117,7 @@ export default function HomePage() {
               <div className="flex flex-col sm:flex-row gap-2">
                 <div className="flex-1 relative">
                   <svg className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                  <input placeholder={placeholder || "Kaunsa kaam chahiye? Plumber, Electrician..."}
+                  <input placeholder="Kaunsa kaam chahiye? Plumber, Electrician..."
                     value={search}
                     onFocus={() => { clearTimeout(blurTimer.current); setFocused(true); }}
                     onBlur={() => { blurTimer.current = setTimeout(() => setFocused(false), 200); }}
