@@ -1,13 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { api } from '../api';
+
+const CAT_API = api.signup.replace('/signup', '/categories');
 
 export default function SignupPage() {
   const [form, setForm] = useState({ name: '', businessName: '', phone: '', category: '', district: '', state: 'Jharkhand', address: '', pincode: '', experience: '', priceRange: '', description: '', services: '' });
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [copied, setCopied] = useState(false);
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    axios.get(CAT_API, { timeout: 5000 }).then(r => { if (r.data.success) setCategories(r.data.data); }).catch(() => {});
+  }, []);
 
   const copyLink = () => {
     navigator.clipboard.writeText(result.data.website);
@@ -84,12 +91,10 @@ export default function SignupPage() {
             </div>
             <div>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Category *</label>
-              <select name="category" required value={form.category} onChange={handleChange}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition bg-white">
-                <option value="">Select category</option>
-                {['Plumber','Electrician','Beautician','Tutor','CA','Lawyer','Mechanic','Painter','Carpenter','AC Repair','Cook','Driver','Maid','Security Guard','Photographer','Event Planner','Fitness Trainer','Web Developer','Designer'].map(c => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
+               <select name="category" required value={form.category} onChange={handleChange}
+                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition bg-white">
+                 <option value="">Select category</option>
+                 {categories.map(c => <option key={c._id} value={c.name}>{c.name}</option>)}
               </select>
             </div>
             <div className="flex gap-3">

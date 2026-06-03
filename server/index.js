@@ -20,12 +20,24 @@ app.get(['/', '/api/health', '/api/health ', '/api/health%20'], (req, res) => {
 });
 
 const providerRoutes = require('./routes/provider');
+const categoryRoutes = require('./routes/categories');
 app.use('/api/provider', providerRoutes);
+app.use('/api/categories', categoryRoutes);
 
 const PORT = process.env.PORT || 5000;
 
+const Category = require('./models/Category');
+
+const DEFAULT_CATEGORIES = ['Plumber','Electrician','Beautician','Tutor','CA','Lawyer','Mechanic','Painter','Carpenter','AC Repair','Cook','Driver','Maid','Security Guard','Photographer','Event Planner','Fitness Trainer','Web Developer','Designer'];
+
 mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('MongoDB connected'))
+  .then(async () => {
+    console.log('MongoDB connected');
+    for (const name of DEFAULT_CATEGORIES) {
+      await Category.findOneAndUpdate({ name: { $regex: new RegExp('^' + name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$', 'i') } }, { name }, { upsert: true });
+    }
+    console.log('Categories seeded');
+  })
   .catch(err => console.log('MongoDB error:', err.message));
 
 http.createServer(app).listen(PORT, () => {

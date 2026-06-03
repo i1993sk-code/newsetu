@@ -121,8 +121,12 @@ router.post('/admin/login', (req, res) => {
 
 router.get('/admin/all', adminAuth, async (req, res) => {
   try {
-    const providers = await Provider.find().sort({ createdAt: -1 });
-    res.json({ success: true, data: providers, count: providers.length });
+    const page = Math.max(1, parseInt(req.query.page) || 1);
+    const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 20));
+    const skip = (page - 1) * limit;
+    const total = await Provider.countDocuments();
+    const providers = await Provider.find().sort({ createdAt: -1 }).skip(skip).limit(limit);
+    res.json({ success: true, data: providers, count: providers.length, total, page, totalPages: Math.ceil(total / limit) });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }

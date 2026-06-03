@@ -4,7 +4,7 @@ export const api = {
   signup: `${API_BASE}/api/provider/signup`,
   login: `${API_BASE}/api/provider/login`,
   adminLogin: `${API_BASE}/api/provider/admin/login`,
-  adminAll: (pwd) => `${API_BASE}/api/provider/admin/all?adminPwd=${pwd}`,
+  adminAll: (pwd, page = 1, limit = 20) => `${API_BASE}/api/provider/admin/all?adminPwd=${pwd}&page=${page}&limit=${limit}`,
   adminDelete: (id, pwd) => `${API_BASE}/api/provider/admin/delete/${id}?adminPwd=${pwd}`,
   updateProvider: (slug) => `${API_BASE}/api/provider/update/${slug}`,
   getProvider: (slug) => `${API_BASE}/api/provider/slug/${slug}`,

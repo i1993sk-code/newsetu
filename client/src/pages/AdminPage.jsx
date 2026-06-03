@@ -3,23 +3,40 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { api } from '../api';
 
+const CAT_API = api.signup.replace('/signup', '/categories');
+
 export default function AdminPage() {
   const [pwd, setPwd] = useState('');
   const [authed, setAuthed] = useState(!!sessionStorage.getItem('adminPwd'));
   const [providers, setProviders] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [categories, setCategories] = useState([]);
+  const [newCat, setNewCat] = useState('');
   const [form, setForm] = useState({ name: '', businessName: '', phone: '', category: '', district: '', state: 'Jharkhand', address: '', pincode: '', experience: '', priceRange: '', description: '', services: '' });
   const [msg, setMsg] = useState('');
   const [loginLoading, setLoginLoading] = useState(false);
 
-  useEffect(() => { if (authed) loadProviders(); }, [authed]);
+  useEffect(() => { if (authed) { loadCategories(); } }, [authed]);
+  useEffect(() => { if (authed) loadProviders(); }, [authed, page]);
+
+  const loadCategories = async () => {
+    try {
+      const res = await axios.get(CAT_API, { timeout: 5000 });
+      if (res.data.success) setCategories(res.data.data);
+    } catch {}
+  };
 
   const loadProviders = async () => {
     setLoading(true);
     try {
       const pw = sessionStorage.getItem('adminPwd');
-      const res = await axios.get(api.adminAll(pw), { timeout: 10000 });
-      if (res.data.success) setProviders(res.data.data);
+      const res = await axios.get(api.adminAll(pw, page, 20), { timeout: 10000 });
+      if (res.data.success) {
+        setProviders(res.data.data);
+        setTotalPages(res.data.totalPages || 1);
+      }
     } catch {}
     setLoading(false);
   };
@@ -56,11 +73,11 @@ export default function AdminPage() {
     try {
       const res = await axios.post(api.signup, {
         ...form, services: form.services.split(',').map(s => s.trim()).filter(Boolean), adminPwd: pw
-      });
+      }, { timeout: 10000 });
       if (res.data.success) {
-        setMsg('✅ Provider added! Website: ' + res.data.data.website);
+        setMsg('✅ Added! ' + res.data.data.website);
         setForm({ name: '', businessName: '', phone: '', category: '', district: '', state: 'Jharkhand', address: '', pincode: '', experience: '', priceRange: '', description: '', services: '' });
-        loadProviders();
+        setPage(1); loadProviders();
       } else {
         setMsg('❌ ' + res.data.message);
       }
@@ -72,6 +89,25 @@ export default function AdminPage() {
     const pw = sessionStorage.getItem('adminPwd');
     await axios.delete(api.adminDelete(id, pw));
     loadProviders();
+  };
+
+  const handleAddCategory = async () => {
+    if (!newCat.trim()) return;
+    const pw = sessionStorage.getItem('adminPwd');
+    try {
+      const res = await axios.post(CAT_API, { name: newCat.trim(), adminPwd: pw }, { timeout: 5000 });
+      if (res.data.success) { setNewCat(''); loadCategories(); }
+      else { alert(res.data.message); }
+    } catch { alert('Error adding category'); }
+  };
+
+  const handleDeleteCategory = async (id) => {
+    if (!confirm('Delete this category?')) return;
+    const pw = sessionStorage.getItem('adminPwd');
+    try {
+      await axios.delete(CAT_API + '/' + id + '?adminPwd=' + pw);
+      loadCategories();
+    } catch {}
   };
 
   if (!authed) {
@@ -90,103 +126,139 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-5xl mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
-          <h1 className="text-2xl font-bold text-gray-900">⚙️ Admin Panel</h1>
+      <div className="max-w-5xl mx-auto px-4 py-6">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-xl font-bold text-gray-900">⚙️ Admin</h1>
           <div className="flex gap-3">
             <Link to="/" className="text-sm text-gray-500 hover:text-orange-500 transition">← Site</Link>
             <button onClick={handleLogout} className="text-sm text-red-500 hover:text-red-600">Logout</button>
           </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">➕ Add Provider</h2>
-          <form onSubmit={handleAdd} className="space-y-3">
-            <div className="flex gap-3">
-              <input name="name" required value={form.name} onChange={handleChange} placeholder="Name *" maxLength={50}
-                className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm outline-none" />
-              <input name="businessName" value={form.businessName} onChange={handleChange} placeholder="Business Name" maxLength={50}
-                className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm outline-none" />
-            </div>
-            <div className="flex gap-3">
-              <input name="phone" required value={form.phone} onChange={handleChange} placeholder="Phone *" type="tel" maxLength={10}
-                className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm outline-none" />
-              <select name="category" required value={form.category} onChange={handleChange}
-                className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm outline-none bg-white">
-                <option value="">Category *</option>
-                {['Plumber','Electrician','Beautician','Tutor','CA','Lawyer','Mechanic','Painter','Carpenter','AC Repair','Cook','Driver','Maid','Security Guard','Photographer','Event Planner','Fitness Trainer','Web Developer','Designer'].map(c => (
-                  <option key={c} value={c}>{c}</option>
-                ))}
-              </select>
-            </div>
-            <div className="flex gap-3">
-              <select name="district" required value={form.district} onChange={handleChange}
-                className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm outline-none bg-white">
-                <option value="">District *</option>
-                {['Bokaro','Chatra','Deoghar','Dhanbad','Dumka','Garhwa','Giridih','Godda','Gumla','Hazaribagh','Jamtara','Khunti','Koderma','Latehar','Lohardaga','Pakur','Palamu','Ramgarh','Ranchi','Sahebganj','Saraikela Kharsawan','Simdega','Singhbhum (East)','Singhbhum (West)'].map(d => (
-                  <option key={d} value={d}>{d}</option>
-                ))}
-              </select>
-              <select name="state" value={form.state} onChange={handleChange}
-                className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm outline-none bg-white">
-                {['Jharkhand','Bihar','West Bengal','Odisha','Uttar Pradesh','Madhya Pradesh','Chhattisgarh','Assam','Andhra Pradesh','Arunachal Pradesh','Goa','Gujarat','Haryana','Himachal Pradesh','Karnataka','Kerala','Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland','Punjab','Rajasthan','Sikkim','Tamil Nadu','Telangana','Tripura','Uttarakhand','Delhi','Chandigarh'].map(s => (
-                  <option key={s} value={s}>{s}</option>
-                ))}
-              </select>
-            </div>
-            <div className="flex gap-3">
-              <input name="pincode" value={form.pincode} onChange={handleChange} placeholder="Pincode" maxLength={6}
-                className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm outline-none" />
-              <select name="experience" value={form.experience} onChange={handleChange}
-                className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm outline-none bg-white">
-                <option value="">Experience</option>
-                {['1','2','3','4','5','6','7','8','9','10','10+'].map(e => (
-                  <option key={e} value={e}>{e} {e === '10+' ? '' : 'yr'}</option>
-                ))}
-              </select>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+            <h2 className="text-base font-bold text-gray-900 mb-3">➕ Add Provider</h2>
+            <form onSubmit={handleAdd} className="space-y-2.5">
+              <div className="flex gap-2">
+                <input name="name" required value={form.name} onChange={handleChange} placeholder="Name *" maxLength={50}
+                  className="w-1/2 px-3 py-2.5 rounded-xl border border-gray-200 text-sm outline-none" />
+                <input name="businessName" value={form.businessName} onChange={handleChange} placeholder="Business Name" maxLength={50}
+                  className="w-1/2 px-3 py-2.5 rounded-xl border border-gray-200 text-sm outline-none" />
+              </div>
+              <div className="flex gap-2">
+                <input name="phone" required value={form.phone} onChange={handleChange} placeholder="Phone *" type="tel" maxLength={10}
+                  className="w-1/2 px-3 py-2.5 rounded-xl border border-gray-200 text-sm outline-none" />
+                <select name="category" required value={form.category} onChange={handleChange}
+                  className="w-1/2 px-3 py-2.5 rounded-xl border border-gray-200 text-sm outline-none bg-white">
+                  <option value="">Category *</option>
+                  {categories.map(c => <option key={c._id} value={c.name}>{c.name}</option>)}
+                </select>
+              </div>
+              <div className="flex gap-2">
+                <select name="district" required value={form.district} onChange={handleChange}
+                  className="w-1/2 px-3 py-2.5 rounded-xl border border-gray-200 text-sm outline-none bg-white">
+                  <option value="">District *</option>
+                  {['Bokaro','Chatra','Deoghar','Dhanbad','Dumka','Garhwa','Giridih','Godda','Gumla','Hazaribagh','Jamtara','Khunti','Koderma','Latehar','Lohardaga','Pakur','Palamu','Ramgarh','Ranchi','Sahebganj','Saraikela Kharsawan','Simdega','Singhbhum (East)','Singhbhum (West)'].map(d => (
+                    <option key={d} value={d}>{d}</option>
+                  ))}
+                </select>
+                <select name="state" value={form.state} onChange={handleChange}
+                  className="w-1/2 px-3 py-2.5 rounded-xl border border-gray-200 text-sm outline-none bg-white">
+                  <option value="">State</option>
+                  {['Jharkhand','Bihar','West Bengal','Odisha','Uttar Pradesh','Madhya Pradesh','Chhattisgarh','Assam','Andhra Pradesh','Arunachal Pradesh','Goa','Gujarat','Haryana','Himachal Pradesh','Karnataka','Kerala','Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland','Punjab','Rajasthan','Sikkim','Tamil Nadu','Telangana','Tripura','Uttarakhand','Delhi','Chandigarh'].map(s => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+              </div>
+              <div className="flex gap-2">
+                <input name="pincode" value={form.pincode} onChange={handleChange} placeholder="Pincode" maxLength={6}
+                  className="w-1/2 px-3 py-2.5 rounded-xl border border-gray-200 text-sm outline-none" />
+                <select name="experience" value={form.experience} onChange={handleChange}
+                  className="w-1/2 px-3 py-2.5 rounded-xl border border-gray-200 text-sm outline-none bg-white">
+                  <option value="">Experience</option>
+                  {['1','2','3','4','5','6','7','8','9','10','10+'].map(e => (
+                    <option key={e} value={e}>{e} {e === '10+' ? '' : 'yr'}</option>
+                  ))}
+                </select>
+              </div>
               <input name="priceRange" value={form.priceRange} onChange={handleChange} placeholder="Price (₹200-500)" maxLength={30}
-                className="flex-1 px-4 py-2.5 rounded-xl border border-gray-200 text-sm outline-none" />
+                className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm outline-none" />
+              <textarea name="description" value={form.description} onChange={handleChange} placeholder="Description" rows={2} maxLength={200}
+                className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm outline-none resize-none" />
+              <textarea name="services" value={form.services} onChange={handleChange} placeholder="Services (comma: Pipe fitting, Repair)" rows={1} maxLength={100}
+                className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm outline-none resize-none" />
+              <button type="submit" className="w-full py-3 bg-gray-900 text-white font-bold rounded-xl text-sm">Add Provider</button>
+              {msg && <p className="text-sm text-center">{msg}</p>}
+            </form>
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+            <h2 className="text-base font-bold text-gray-900 mb-3">📂 Categories</h2>
+            <div className="flex gap-2 mb-3">
+              <input value={newCat} onChange={e => setNewCat(e.target.value)} placeholder="New category name" maxLength={50}
+                onKeyDown={e => e.key === 'Enter' && handleAddCategory()}
+                className="flex-1 px-3 py-2.5 rounded-xl border border-gray-200 text-sm outline-none" />
+              <button onClick={handleAddCategory} className="px-4 py-2.5 bg-gray-900 text-white font-semibold rounded-xl text-sm whitespace-nowrap">Add</button>
             </div>
-            <textarea name="description" value={form.description} onChange={handleChange} placeholder="Description" rows={2} maxLength={200}
-              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm outline-none resize-none" />
-            <textarea name="services" value={form.services} onChange={handleChange} placeholder="Services (comma: Pipe fitting, Repair)" rows={1} maxLength={100}
-              className="w-full px-4 py-2.5 rounded-xl border border-gray-200 text-sm outline-none resize-none" />
-            <button type="submit" className="w-full py-3 bg-gray-900 text-white font-bold rounded-xl text-sm">Add Provider</button>
-            {msg && <p className="text-sm text-center">{msg}</p>}
-          </form>
+            <div className="flex flex-wrap gap-1.5">
+              {categories.map(c => (
+                <span key={c._id} className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-gray-100 rounded-lg text-xs text-gray-700">
+                  {c.name}
+                  <button onClick={() => handleDeleteCategory(c._id)} className="text-red-400 hover:text-red-600 font-bold leading-none">&times;</button>
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">📋 All Providers ({providers.length})</h2>
-          {loading ? <p className="text-gray-400 text-sm">Loading...</p> : (
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead><tr className="border-b text-left text-gray-400 text-xs uppercase">
-                  <th className="pb-2 pr-3">Name</th><th className="pb-2 pr-3">Phone</th><th className="pb-2 pr-3">Category</th><th className="pb-2 pr-3">District</th><th className="pb-2 pr-3">Date</th><th className="pb-2"></th>
-                </tr></thead>
-                <tbody>
-                  {providers.map(p => (
-                    <tr key={p._id} className="border-b last:border-0 hover:bg-gray-50">
-                      <td className="py-3 pr-3 font-medium">{p.businessName || p.name}</td>
-                      <td className="py-3 pr-3 text-gray-500">{p.phone}</td>
-                      <td className="py-3 pr-3 text-gray-500">{p.category}</td>
-                      <td className="py-3 pr-3 text-gray-500">{p.district || p.city}</td>
-                      <td className="py-3 pr-3 text-gray-400 text-xs">{new Date(p.createdAt).toLocaleDateString()}</td>
-                      <td className="py-3">
-                        <div className="flex gap-2">
-                          <a href={`/provider/${p.slug}`} target="_blank" rel="noopener noreferrer"
-                            className="px-2.5 py-1 bg-gray-100 text-gray-600 rounded-lg text-xs hover:bg-gray-200">View</a>
-                          <a href={`/edit/${p.slug}`} target="_blank" rel="noopener noreferrer"
-                            className="px-2.5 py-1 bg-blue-50 text-blue-600 rounded-lg text-xs hover:bg-blue-100">Edit</a>
-                          <button onClick={() => handleDelete(p._id)}
-                            className="px-2.5 py-1 bg-red-50 text-red-600 rounded-lg text-xs hover:bg-red-100">Del</button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-base font-bold text-gray-900">📋 Providers</h2>
+            <div className="flex items-center gap-2">
+              <button onClick={() => setPage(p => Math.max(1, p - 1))} disabled={page <= 1}
+                className="px-3 py-1.5 bg-gray-100 rounded-lg text-xs disabled:opacity-30 hover:bg-gray-200">&larr; Prev</button>
+              <span className="text-xs text-gray-500">Page {page}/{totalPages}</span>
+              <button onClick={() => setPage(p => Math.min(totalPages, p + 1))} disabled={page >= totalPages}
+                className="px-3 py-1.5 bg-gray-100 rounded-lg text-xs disabled:opacity-30 hover:bg-gray-200">Next &rarr;</button>
             </div>
+          </div>
+          {loading ? <p className="text-gray-400 text-sm text-center py-8">Loading...</p> : (
+            <>
+              <div className="overflow-x-auto -mx-5 px-5 md:mx-0 md:px-0">
+                <table className="w-full text-sm min-w-[500px]">
+                  <thead><tr className="border-b text-left text-gray-400 text-xs uppercase">
+                    <th className="pb-2 pr-2 whitespace-nowrap">Name</th>
+                    <th className="pb-2 pr-2 whitespace-nowrap">Phone</th>
+                    <th className="pb-2 pr-2 whitespace-nowrap">Category</th>
+                    <th className="pb-2 pr-2 whitespace-nowrap hidden sm:table-cell">District</th>
+                    <th className="pb-2 pr-2 whitespace-nowrap hidden sm:table-cell">Date</th>
+                    <th className="pb-2"></th>
+                  </tr></thead>
+                  <tbody>
+                    {providers.map(p => (
+                      <tr key={p._id} className="border-b last:border-0 hover:bg-gray-50">
+                        <td className="py-2.5 pr-2 font-medium whitespace-nowrap">{p.businessName || p.name}</td>
+                        <td className="py-2.5 pr-2 text-gray-500 whitespace-nowrap">{p.phone}</td>
+                        <td className="py-2.5 pr-2 text-gray-500 whitespace-nowrap">{p.category}</td>
+                        <td className="py-2.5 pr-2 text-gray-500 whitespace-nowrap hidden sm:table-cell">{p.district || p.city}</td>
+                        <td className="py-2.5 pr-2 text-gray-400 text-xs whitespace-nowrap hidden sm:table-cell">{new Date(p.createdAt).toLocaleDateString()}</td>
+                        <td className="py-2.5">
+                          <div className="flex gap-1.5">
+                            <a href={`/provider/${p.slug}`} target="_blank" rel="noopener noreferrer"
+                              className="px-2 py-1 bg-gray-100 text-gray-600 rounded-lg text-xs hover:bg-gray-200">View</a>
+                            <a href={`/edit/${p.slug}`} target="_blank" rel="noopener noreferrer"
+                              className="px-2 py-1 bg-blue-50 text-blue-600 rounded-lg text-xs hover:bg-blue-100">Edit</a>
+                            <button onClick={() => handleDelete(p._id)}
+                              className="px-2 py-1 bg-red-50 text-red-600 rounded-lg text-xs hover:bg-red-100">Del</button>
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              {providers.length === 0 && <p className="text-gray-400 text-sm text-center py-8">No providers yet</p>}
+            </>
           )}
         </div>
       </div>
