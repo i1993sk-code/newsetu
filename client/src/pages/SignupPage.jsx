@@ -4,7 +4,7 @@ import axios from 'axios';
 import { api } from '../api';
 
 export default function SignupPage() {
-  const [form, setForm] = useState({ name: '', businessName: '', phone: '', category: '', city: '', state: '', address: '', pincode: '', experience: '', priceRange: '', description: '', services: '' });
+  const [form, setForm] = useState({ name: '', businessName: '', phone: '', category: '', district: '', state: 'Jharkhand', address: '', pincode: '', experience: '', priceRange: '', description: '', services: '' });
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [copied, setCopied] = useState(false);
@@ -28,7 +28,7 @@ export default function SignupPage() {
       const res = await axios.post(api.signup, {
         ...form, services: form.services.split(',').map(s => s.trim()).filter(Boolean)
       });
-      setForm({ name: '', businessName: '', phone: '', category: '', city: '', state: '', address: '', pincode: '', experience: '', priceRange: '', description: '', services: '' });
+      setForm({ name: '', businessName: '', phone: '', category: '', district: '', state: 'Jharkhand', address: '', pincode: '', experience: '', priceRange: '', description: '', services: '' });
       setResult(res.data);
     } catch (err) {
       alert(err?.response?.data?.message || 'Something went wrong');
@@ -94,15 +94,19 @@ export default function SignupPage() {
             </div>
             <div className="flex gap-3">
               <div className="flex-1">
-                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">City *</label>
-                <input name="city" required value={form.city} onChange={handleChange} placeholder="Aapka city" maxLength={30}
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition" />
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">District *</label>
+                <select name="district" required value={form.district} onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition bg-white">
+                  <option value="">Select district</option>
+                  {['Bokaro','Chatra','Deoghar','Dhanbad','Dumka','Garhwa','Giridih','Godda','Gumla','Hazaribagh','Jamtara','Khunti','Koderma','Latehar','Lohardaga','Pakur','Palamu','Ramgarh','Ranchi','Sahebganj','Saraikela Kharsawan','Simdega','Singhbhum (East)','Singhbhum (West)'].map(d => (
+                    <option key={d} value={d}>{d}</option>
+                  ))}
+                </select>
               </div>
               <div className="flex-1">
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">State</label>
                 <select name="state" value={form.state} onChange={handleChange}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition bg-white">
-                  <option value="">Select</option>
                   {['Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chhattisgarh','Goa','Gujarat','Haryana','Himachal Pradesh','Jharkhand','Karnataka','Kerala','Madhya Pradesh','Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland','Odisha','Punjab','Rajasthan','Sikkim','Tamil Nadu','Telangana','Tripura','Uttar Pradesh','Uttarakhand','West Bengal','Delhi','Chandigarh'].map(s => (
                     <option key={s} value={s}>{s}</option>
                   ))}

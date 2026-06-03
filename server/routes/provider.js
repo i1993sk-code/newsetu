@@ -9,9 +9,9 @@ function generateSlug(name) {
 
 router.post('/signup', async (req, res) => {
   try {
-    const { name, businessName, phone, category, city, state, address, pincode, experience, priceRange, description, services } = req.body;
-    if (!name || !phone || !category || !city) {
-      return res.json({ success: false, message: 'Name, phone, category & city required' });
+    const { name, businessName, phone, category, district, city, state, address, pincode, experience, priceRange, description, services } = req.body;
+    if (!name || !phone || !category || !(district || city)) {
+      return res.json({ success: false, message: 'Name, phone, category & district/city required' });
     }
     if (!/^\d{10}$/.test(phone)) {
       return res.json({ success: false, message: 'Phone number must be exactly 10 digits' });
@@ -23,7 +23,7 @@ router.post('/signup', async (req, res) => {
       counter++;
     }
     const provider = await Provider.create({
-      name, businessName, phone, category, city, state,
+      name, businessName, phone, category, district, city, state,
       address, pincode, experience, priceRange, description,
       services: services || [],
       slug, plan: 'free', isActive: true
@@ -55,9 +55,10 @@ router.get('/slug/:slug', async (req, res) => {
 
 router.get('/search', async (req, res) => {
   try {
-    const { category, city, pincode } = req.query;
+    const { category, district, city, pincode } = req.query;
     const filter = { isActive: true };
     if (category) filter.category = { $regex: category, $options: 'i' };
+    if (district) filter.district = { $regex: district, $options: 'i' };
     if (city) filter.city = { $regex: city, $options: 'i' };
     if (pincode) filter.pincode = pincode;
     const providers = await Provider.find(filter).sort({ plan: -1, averageRating: -1 });
@@ -83,14 +84,15 @@ router.post('/login', async (req, res) => {
 
 router.put('/update/:slug', async (req, res) => {
   try {
-    const { phone, name, businessName, category, city, state, address, pincode, experience, priceRange, description, services } = req.body;
+    const { phone, name, businessName, category, district, city, state, address, pincode, experience, priceRange, description, services } = req.body;
     const provider = await Provider.findOne({ slug: req.params.slug });
     if (!provider) return res.json({ success: false, message: 'Provider not found' });
     if (phone !== provider.phone) return res.json({ success: false, message: 'Phone number mismatch' });
     if (name) provider.name = name;
     if (businessName !== undefined) provider.businessName = businessName;
     if (category) provider.category = category;
-    if (city) provider.city = city;
+    if (district !== undefined) provider.district = district;
+    if (city !== undefined) provider.city = city;
     if (state !== undefined) provider.state = state;
     if (address !== undefined) provider.address = address;
     if (pincode !== undefined) provider.pincode = pincode;
