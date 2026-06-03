@@ -148,6 +148,11 @@ export default function ProviderPage() {
             NewSetu — Free me apna profile banayein →
           </Link>
         </div>
+        <div className="text-center pt-8 pb-4 border-t border-gray-100 mt-8">
+          <p className="text-xs text-gray-300">
+            Built by <a href="mailto:i1993sk@gmail.com" className="text-gray-400 hover:text-orange-500 transition">Santosh Kumar</a>
+          </p>
+        </div>
       </div>
     </div>
   );

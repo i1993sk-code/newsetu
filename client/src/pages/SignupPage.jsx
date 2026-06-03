@@ -164,6 +164,11 @@ export default function SignupPage() {
             <Link to="/" className="block text-center text-xs text-gray-400 hover:text-orange-500 transition">← Back to home</Link>
           </form>
         )}
+        <div className="text-center pt-8 pb-4 border-t border-gray-100 mt-8">
+          <p className="text-xs text-gray-300">
+            Built by <a href="mailto:i1993sk@gmail.com" className="text-gray-400 hover:text-orange-500 transition">Santosh Kumar</a>
+          </p>
+        </div>
       </div>
     </div>
   );
