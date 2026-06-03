@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { api } from '../api';
 
-const CAT_API = api.signup.replace('/signup', '/categories');
+const CAT_API = api.signup.replace('provider/signup', 'categories');
 
 const icons = {
   Plumber: '🔧', Electrician: '⚡', Beautician: '💅', Tutor: '📚', CA: '💰',

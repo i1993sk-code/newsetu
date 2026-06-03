@@ -3,7 +3,7 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { api } from '../api';
 
-const CAT_API = api.signup.replace('/signup', '/categories');
+const CAT_API = api.signup.replace('provider/signup', 'categories');
 
 const DISTRICTS = ['Bokaro','Chatra','Deoghar','Dhanbad','Dumka','Garhwa','Giridih','Godda','Gumla','Hazaribagh','Jamtara','Khunti','Koderma','Latehar','Lohardaga','Pakur','Palamu','Ramgarh','Ranchi','Sahebganj','Saraikela Kharsawan','Simdega','Singhbhum (East)','Singhbhum (West)'];
 const STATES = ['Jharkhand','Bihar','West Bengal','Odisha','Uttar Pradesh','Madhya Pradesh','Chhattisgarh','Assam','Andhra Pradesh','Arunachal Pradesh','Goa','Gujarat','Haryana','Himachal Pradesh','Karnataka','Kerala','Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland','Punjab','Rajasthan','Sikkim','Tamil Nadu','Telangana','Tripura','Uttarakhand','Delhi','Chandigarh'];

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { api } from '../api';
 
-const CAT_API = api.signup.replace('/signup', '/categories');
+const CAT_API = api.signup.replace('provider/signup', 'categories');
 
 export default function SignupPage() {
   const [form, setForm] = useState({ name: '', businessName: '', phone: '', category: '', district: '', state: 'Jharkhand', address: '', pincode: '', experience: '', priceRange: '', description: '', services: '' });
