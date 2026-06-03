@@ -105,7 +105,7 @@ export default function HomePage() {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6">
           <Link to="/signup" className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-xl transition text-sm shadow-sm w-full sm:w-auto justify-center">
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
-            Free website banayein
+            Free profile banayein
           </Link>
           <Link to="/find" className="text-xs text-gray-400 hover:text-orange-500 transition text-center">
             🔍 Profile bhool gaye? Yahan dhoondein

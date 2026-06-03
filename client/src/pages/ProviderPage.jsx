@@ -123,7 +123,7 @@ export default function ProviderPage() {
             ✏️ Edit your profile
           </Link>
           <Link to="/signup" className="block text-xs text-gray-400 hover:text-orange-500 transition">
-            NewSetu — Apni free website banayein →
+            NewSetu — Free me apna profile banayein →
           </Link>
         </div>
       </div>

@@ -50,7 +50,7 @@ export default function SignupPage() {
           <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-900 tracking-tight">
             <span className="text-orange-500">New</span>Setu
           </h1>
-          <p className="text-gray-500 mt-2">Apni free website banayein</p>
+          <p className="text-gray-500 mt-2">Free me apna profile banayein</p>
         </div>
 
         {result?.success ? (
@@ -58,8 +58,8 @@ export default function SignupPage() {
             <div className="w-16 h-16 rounded-full bg-green-100 mx-auto mb-4 flex items-center justify-center">
               <svg className="w-8 h-8 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7"/></svg>
             </div>
-            <h2 className="text-xl font-bold text-gray-900 mb-2">Website ready! 🎉</h2>
-            <p className="text-sm text-gray-500 mb-4">Aapki website:</p>
+             <h2 className="text-xl font-bold text-gray-900 mb-2">Profile ready! 🎉</h2>
+             <p className="text-sm text-gray-500 mb-4">Aapki profile ready hai:</p>
             <div className="flex items-center gap-2 bg-orange-50 rounded-xl border border-orange-200 px-4 py-3 mb-4">
               <span className="flex-1 text-orange-600 font-bold text-sm truncate">{result.data.website}</span>
               <button onClick={copyLink}
@@ -157,7 +157,7 @@ export default function SignupPage() {
                   <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
                   Creating...
                 </span>
-              ) : 'Free Website Banayein 🚀'}
+               ) : 'Free Profile Banayein 🚀'}
             </button>
           </form>
         )}
