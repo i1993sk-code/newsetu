@@ -48,6 +48,7 @@ export default function EditProfile() {
           priceRange: res.data.data.priceRange || '',
           description: res.data.data.description || '',
           services: (res.data.data.services || []).join(', '),
+          showPhone: res.data.data.showPhone !== false,
         });
       } else {
         setError('Provider not found. Check your slug and phone.');
@@ -199,6 +200,11 @@ export default function EditProfile() {
               <label className="block text-xs font-semibold text-gray-500 mb-1">Services (comma separated)</label>
               <input name="services" value={form.services} onChange={handleChange} maxLength={100}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 outline-none text-sm" />
+            </div>
+            <div className="flex items-center gap-3">
+              <input type="checkbox" name="showPhone" checked={form.showPhone} onChange={e => setForm({ ...form, showPhone: e.target.checked })}
+                className="w-5 h-5 rounded border-gray-300 text-orange-500 focus:ring-orange-400" />
+              <label className="text-sm text-gray-600">Mera phone number profile pe dikhayein</label>
             </div>
             <button onClick={handleSave} disabled={loading}
               className="w-full py-3 bg-gray-900 hover:bg-gray-800 text-white font-bold rounded-xl text-sm transition">

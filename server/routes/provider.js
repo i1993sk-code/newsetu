@@ -25,7 +25,7 @@ router.post('/signup', async (req, res) => {
     const provider = await Provider.create({
       name, businessName, phone, category, district, city, state,
       address, pincode, experience, priceRange, description,
-      services: services || [],
+      services: services || [], showPhone: true,
       slug, plan: 'free', isActive: true
     });
     res.json({
@@ -84,7 +84,7 @@ router.post('/login', async (req, res) => {
 
 router.put('/update/:slug', async (req, res) => {
   try {
-    const { phone, name, businessName, category, district, city, state, address, pincode, experience, priceRange, description, services } = req.body;
+    const { phone, name, businessName, category, district, city, state, address, pincode, experience, priceRange, description, services, showPhone } = req.body;
     const provider = await Provider.findOne({ slug: req.params.slug });
     if (!provider) return res.json({ success: false, message: 'Provider not found' });
     if (phone !== provider.phone) return res.json({ success: false, message: 'Phone number mismatch' });
@@ -100,6 +100,7 @@ router.put('/update/:slug', async (req, res) => {
     if (priceRange !== undefined) provider.priceRange = priceRange;
     if (description !== undefined) provider.description = description;
     if (services) provider.services = services;
+    if (showPhone !== undefined) provider.showPhone = showPhone;
     provider.updatedAt = Date.now();
     await provider.save();
     res.json({ success: true, message: 'Profile updated', data: provider });
@@ -160,6 +161,19 @@ router.post('/delete-profile', async (req, res) => {
     if (provider.phone !== phone) return res.json({ success: false, message: 'Phone number does not match' });
     await Provider.findByIdAndDelete(provider._id);
     res.json({ success: true, message: 'Profile deleted' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+router.post('/report/:slug', async (req, res) => {
+  try {
+    const provider = await Provider.findOne({ slug: req.params.slug });
+    if (!provider) return res.json({ success: false, message: 'Provider not found' });
+    provider.reportedAt = new Date();
+    provider.reportReason = req.body.reason || 'Reported';
+    await provider.save();
+    res.json({ success: true, message: 'Reported. Team will review.' });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
