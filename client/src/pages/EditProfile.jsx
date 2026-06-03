@@ -26,6 +26,8 @@ export default function EditProfile() {
     axios.get(CAT_API, { timeout: 5000 }).then(r => { if (r.data.success && r.data.data.length > 0) setCategories(r.data.data); }).catch(() => {});
   }, []);
 
+  useEffect(() => { document.title = 'Edit Profile - NewSetu'; }, []);
+
   const handleLogin = async () => {
     if (!phone) return;
     setLoading(true);
