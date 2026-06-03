@@ -24,6 +24,11 @@ app.get(['/', '/api/health'], (req, res) => {
 const providerRoutes = require('./routes/provider');
 app.use('/api/provider', providerRoutes);
 
+app.use((req, res) => {
+  console.log('CATCH-ALL:', req.method, req.path);
+  res.json({ path: req.path, method: req.method });
+});
+
 const PORT = process.env.PORT || 5000;
 
 mongoose.connect(process.env.MONGODB_URI)
@@ -36,13 +41,7 @@ server.on('error', (err) => {
   console.log('SERVER ERROR:', err.message, err.code);
 });
 
-server.on('listening', () => {
+server.listen(PORT, () => {
   const addr = server.address();
-  console.log(`Server listening: ${JSON.stringify(addr)}`);
+  console.log(`Server running on port ${PORT} | address: ${JSON.stringify(addr)}`);
 });
-
-server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on port ${PORT}`);
-});
-
-setInterval(() => console.log('Alive...'), 30000);
