@@ -13,6 +13,9 @@ router.post('/signup', async (req, res) => {
     if (!name || !phone || !category || !city) {
       return res.json({ success: false, message: 'Name, phone, category & city required' });
     }
+    if (!/^\d{10}$/.test(phone)) {
+      return res.json({ success: false, message: 'Phone number must be exactly 10 digits' });
+    }
     let slug = generateSlug(businessName || name);
     let counter = 1;
     while (await Provider.findOne({ slug })) {
@@ -68,6 +71,7 @@ router.post('/login', async (req, res) => {
   try {
     const { phone, slug } = req.body;
     if (!phone) return res.json({ success: false, message: 'Phone required' });
+    if (!/^\d{10}$/.test(phone)) return res.json({ success: false, message: 'Invalid phone number' });
     const filter = slug ? { slug, phone } : { phone };
     const provider = await Provider.findOne(filter);
     if (!provider) return res.json({ success: false, message: 'Provider not found' });
