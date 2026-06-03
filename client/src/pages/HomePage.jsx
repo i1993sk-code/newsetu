@@ -197,27 +197,55 @@ export default function HomePage() {
       </div>
 
       {!results && (
-        <div className="bg-gray-50 py-14">
-          <div className="max-w-5xl mx-auto px-4">
-            <div className="flex items-center justify-between mb-6">
-              <div>
-                <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900">Browse Categories</h2>
-                <p className="text-gray-400 text-sm mt-0.5">Apni zaroorat ke hisaab se category choose karein</p>
-              </div>
+        <>
+          <div className="max-w-5xl mx-auto px-4 py-14">
+            <div className="mb-6">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900">Popular Services</h2>
+              <p className="text-gray-400 text-sm mt-0.5">Aapke shehar ke top service categories</p>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-              {categories.map(c => (
-                <button key={c._id} onClick={() => { setSearch(c.name); doSearch(c.name); }}
-                  className="group relative overflow-hidden rounded-2xl bg-white border border-gray-100 p-5 text-center hover:shadow-lg hover:-translate-y-1 transition-all">
-                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${catBg[c.name] || 'from-orange-400 to-pink-500'} text-white flex items-center justify-center text-2xl mx-auto mb-3 shadow-md group-hover:scale-110 transition-transform`}>
-                    {icons[c.name] || '🔹'}
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+              {[
+                { name: 'Electrician', img: 'https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=400&q=80' },
+                { name: 'Beautician', img: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80' },
+                { name: 'Mechanic', img: 'https://images.unsplash.com/photo-1530046339160-ce3e530c7d2f?w=400&q=80' },
+                { name: 'Cook', img: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=400&q=80' },
+              ].map((s, i) => (
+                <button key={i} onClick={() => { setSearch(s.name); doSearch(s.name); }}
+                  className="group relative overflow-hidden rounded-2xl shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all">
+                  <div className="relative h-40 sm:h-44">
+                    <img src={s.img} alt={s.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" loading="lazy" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                    <div className="absolute bottom-0 left-0 right-0 p-4">
+                      <span className="text-white font-bold text-sm drop-shadow-lg">{s.name}</span>
+                    </div>
                   </div>
-                  <span className="text-xs font-semibold text-gray-700 group-hover:text-orange-600 transition-colors">{c.name}</span>
                 </button>
               ))}
             </div>
           </div>
-        </div>
+
+          <div className="bg-gray-50 py-14">
+            <div className="max-w-5xl mx-auto px-4">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-900">All Categories</h2>
+                  <p className="text-gray-400 text-sm mt-0.5">Apni zaroorat ke hisaab se choose karein</p>
+                </div>
+              </div>
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                {categories.map(c => (
+                  <button key={c._id} onClick={() => { setSearch(c.name); doSearch(c.name); }}
+                    className="group relative overflow-hidden rounded-2xl bg-white border border-gray-100 p-5 text-center hover:shadow-lg hover:-translate-y-1 transition-all">
+                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${catBg[c.name] || 'from-orange-400 to-pink-500'} text-white flex items-center justify-center text-2xl mx-auto mb-3 shadow-md group-hover:scale-110 transition-transform`}>
+                      {icons[c.name] || '🔹'}
+                    </div>
+                    <span className="text-xs font-semibold text-gray-700 group-hover:text-orange-600 transition-colors">{c.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </>
       )}
 
       {results && results.data?.length > 0 && (
