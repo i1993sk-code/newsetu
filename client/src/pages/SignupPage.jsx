@@ -7,6 +7,13 @@ export default function SignupPage() {
   const [form, setForm] = useState({ name: '', businessName: '', phone: '', category: '', city: '', address: '', pincode: '', experience: '', priceRange: '', description: '', services: '' });
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [copied, setCopied] = useState(false);
+
+  const copyLink = () => {
+    navigator.clipboard.writeText(result.data.website);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -41,10 +48,13 @@ export default function SignupPage() {
             </div>
             <h2 className="text-xl font-bold text-gray-900 mb-2">Website ready! 🎉</h2>
             <p className="text-sm text-gray-500 mb-4">Aapki website:</p>
-            <a href={result.data.website} target="_blank" rel="noopener noreferrer"
-              className="inline-block px-6 py-3 bg-orange-50 text-orange-600 font-bold rounded-xl border border-orange-200 hover:bg-orange-100 transition mb-4 text-sm">
-              {result.data.website}
-            </a>
+            <div className="flex items-center gap-2 bg-orange-50 rounded-xl border border-orange-200 px-4 py-3 mb-4">
+              <span className="flex-1 text-orange-600 font-bold text-sm truncate">{result.data.website}</span>
+              <button onClick={copyLink}
+                className="shrink-0 px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white text-xs font-semibold rounded-lg transition">
+                {copied ? '✅ Copied!' : '📋 Copy'}
+              </button>
+            </div>
             <p className="text-xs text-gray-400">Is link ko copy karein aur share karein!</p>
             <Link to="/" className="inline-block mt-6 text-sm text-gray-500 hover:text-orange-500 transition">
               ← Back to home
