@@ -5,10 +5,12 @@ import SignupPage from './pages/SignupPage';
 import EditProfile from './pages/EditProfile';
 import FindProfile from './pages/FindProfile';
 import AdminPage from './pages/AdminPage';
+import AdPopup from './components/AdPopup';
 
 function App() {
   return (
     <BrowserRouter>
+      <AdPopup />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/signup" element={<SignupPage />} />
