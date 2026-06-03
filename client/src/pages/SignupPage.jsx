@@ -15,7 +15,11 @@ export default function SignupPage() {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    const digitsOnly = ['phone', 'pincode', 'experience'];
+    setForm({ ...form, [name]: digitsOnly.includes(name) ? value.replace(/\D/g, '') : value });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
