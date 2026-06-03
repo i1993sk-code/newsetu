@@ -1,6 +1,3 @@
-process.on('unhandledRejection', (err) => console.log('UNHANDLED REJECTION:', err.message));
-process.on('uncaughtException', (err) => console.log('UNCAUGHT EXCEPTION:', err.message));
-
 require('dotenv').config();
 const http = require('http');
 const express = require('express');
@@ -15,33 +12,22 @@ app.use((req, res, next) => {
   if (req.method === 'OPTIONS') return res.sendStatus(200);
   next();
 });
+
 app.use(express.json());
 
-app.get(['/', '/api/health'], (req, res) => {
+app.get(['/', '/api/health', '/api/health ', '/api/health%20'], (req, res) => {
   res.json({ status: 'ok', message: 'NewSetu API is running' });
 });
 
 const providerRoutes = require('./routes/provider');
 app.use('/api/provider', providerRoutes);
 
-app.use((req, res) => {
-  console.log('CATCH-ALL:', req.method, req.path);
-  res.json({ path: req.path, method: req.method });
-});
-
 const PORT = process.env.PORT || 5000;
 
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('MongoDB connected'))
-  .catch(err => console.log('MongoDB error:', err));
+  .catch(err => console.log('MongoDB error:', err.message));
 
-const server = http.createServer(app);
-
-server.on('error', (err) => {
-  console.log('SERVER ERROR:', err.message, err.code);
-});
-
-server.listen(PORT, () => {
-  const addr = server.address();
-  console.log(`Server running on port ${PORT} | address: ${JSON.stringify(addr)}`);
+http.createServer(app).listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
 });
