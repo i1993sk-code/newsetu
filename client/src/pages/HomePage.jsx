@@ -130,7 +130,7 @@ export default function HomePage() {
                     </div>
                     <div className="flex-1 min-w-0">
                       <h3 className="font-semibold text-gray-900 group-hover:text-orange-600 transition text-sm sm:text-base">{p.businessName || p.name}</h3>
-                      <p className="text-xs sm:text-sm text-gray-500 mt-0.5">{p.category} <span className="mx-1.5">•</span> 📍 {p.district || p.city}{p.priceRange ? <span className="mx-1.5">•</span> : ''}{p.priceRange}</p>
+                      <p className="text-xs sm:text-sm text-gray-500 mt-0.5">{p.category} <span className="mx-1.5">•</span> 📍 {p.district || p.city}</p>
                       {p.services?.length > 0 && (
                         <p className="text-xs text-gray-400 mt-1 truncate">{p.services.join(', ')}</p>
                       )}

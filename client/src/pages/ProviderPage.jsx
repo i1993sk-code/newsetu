@@ -105,15 +105,6 @@ export default function ProviderPage() {
                     </div>
                   </div>
                 )}
-                {provider.priceRange && (
-                  <div className="flex items-center gap-3">
-                    <span className="text-lg">💰</span>
-                    <div>
-                      <p className="text-xs text-gray-400">Price Range</p>
-                      <p className="text-sm font-medium text-gray-700">{provider.priceRange}</p>
-                    </div>
-                  </div>
-                )}
               </div>
             </div>
 

@@ -45,7 +45,6 @@ export default function EditProfile() {
           address: res.data.data.address || '',
           pincode: res.data.data.pincode || '',
           experience: res.data.data.experience || '',
-          priceRange: res.data.data.priceRange || '',
           description: res.data.data.description || '',
           services: (res.data.data.services || []).join(', '),
           showPhone: res.data.data.showPhone !== false,
@@ -185,11 +184,6 @@ export default function EditProfile() {
                 <input name="experience" value={form.experience} onChange={handleChange} maxLength={2}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 outline-none text-sm" />
               </div>
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-gray-500 mb-1">Price Range</label>
-              <input name="priceRange" value={form.priceRange} onChange={handleChange} maxLength={30}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 outline-none text-sm" />
             </div>
             <div>
               <label className="block text-xs font-semibold text-gray-500 mb-1">Description</label>

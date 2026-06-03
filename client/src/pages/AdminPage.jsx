@@ -15,7 +15,7 @@ export default function AdminPage() {
   const [totalPages, setTotalPages] = useState(1);
   const [categories, setCategories] = useState(DEFAULT_CATS.map((n, i) => ({ _id: i, name: n })));
   const [newCat, setNewCat] = useState('');
-  const [form, setForm] = useState({ name: '', businessName: '', phone: '', category: '', district: '', state: 'Jharkhand', address: '', pincode: '', experience: '', priceRange: '', description: '', services: '' });
+  const [form, setForm] = useState({ name: '', businessName: '', phone: '', category: '', district: '', state: 'Jharkhand', address: '', pincode: '', experience: '', description: '', services: '' });
   const [msg, setMsg] = useState('');
   const [loginLoading, setLoginLoading] = useState(false);
   const [search, setSearch] = useState('');
@@ -78,7 +78,7 @@ export default function AdminPage() {
       }, { timeout: 10000 });
       if (res.data.success) {
         setMsg('✅ Added! ' + res.data.data.website);
-        setForm({ name: '', businessName: '', phone: '', category: '', district: '', state: 'Jharkhand', address: '', pincode: '', experience: '', priceRange: '', description: '', services: '' });
+        setForm({ name: '', businessName: '', phone: '', category: '', district: '', state: 'Jharkhand', address: '', pincode: '', experience: '', description: '', services: '' });
         setPage(1); loadProviders();
       } else {
         setMsg('❌ ' + res.data.message);
@@ -189,8 +189,6 @@ export default function AdminPage() {
                   ))}
                 </select>
               </div>
-              <input name="priceRange" value={form.priceRange} onChange={handleChange} placeholder="Price (₹200-500)" maxLength={30}
-                className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm outline-none" />
               <textarea name="description" value={form.description} onChange={handleChange} placeholder="Description" rows={2} maxLength={200}
                 className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm outline-none resize-none" />
               <textarea name="services" value={form.services} onChange={handleChange} placeholder="Services (comma: Pipe fitting, Repair)" rows={1} maxLength={100}

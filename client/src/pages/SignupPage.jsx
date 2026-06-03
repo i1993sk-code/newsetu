@@ -7,7 +7,7 @@ const DEFAULT_CATS = ['Plumber','Electrician','Beautician','Tutor','CA','Lawyer'
 const CAT_API = api.signup.replace('provider/signup', 'categories');
 
 export default function SignupPage() {
-  const [form, setForm] = useState({ name: '', businessName: '', phone: '', category: '', district: '', state: 'Jharkhand', address: '', pincode: '', experience: '', priceRange: '', description: '', services: '' });
+  const [form, setForm] = useState({ name: '', businessName: '', phone: '', category: '', district: '', state: 'Jharkhand', address: '', pincode: '', experience: '', description: '', services: '' });
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [copied, setCopied] = useState(false);
@@ -37,7 +37,7 @@ export default function SignupPage() {
       const res = await axios.post(api.signup, {
         ...form, services: form.services.split(',').map(s => s.trim()).filter(Boolean)
       });
-      setForm({ name: '', businessName: '', phone: '', category: '', district: '', state: 'Jharkhand', address: '', pincode: '', experience: '', priceRange: '', description: '', services: '' });
+      setForm({ name: '', businessName: '', phone: '', category: '', district: '', state: 'Jharkhand', address: '', pincode: '', experience: '', description: '', services: '' });
       setResult(res.data);
     } catch (err) {
       alert(err?.response?.data?.message || 'Something went wrong');
@@ -136,11 +136,6 @@ export default function SignupPage() {
                 <input name="experience" value={form.experience} onChange={handleChange} placeholder="5" maxLength={2}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition" />
               </div>
-            </div>
-            <div>
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Price Range</label>
-              <input name="priceRange" value={form.priceRange} onChange={handleChange} placeholder="₹200 - ₹500" maxLength={30}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition" />
             </div>
             <div>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">About You / Description</label>
