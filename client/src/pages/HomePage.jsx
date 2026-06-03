@@ -16,6 +16,9 @@ const icons = {
 
 const catImg = {
   Plumber: 'https://images.unsplash.com/photo-1592210454359-9043f067919b?w=400&q=80',
+  Painter: 'https://loremflickr.com/400/300/painter',
+  Carpenter: 'https://loremflickr.com/400/300/carpenter',
+  'AC Repair': 'https://loremflickr.com/400/300/air+conditioner',
   Electrician: 'https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=400&q=80',
   Beautician: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80',
   Tutor: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=80',
@@ -33,12 +36,7 @@ const catImg = {
   Designer: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?w=400&q=80',
 };
 
-const catBg = {
-  Plumber: 'from-cyan-500 to-blue-600',
-  Painter: 'from-purple-500 to-pink-600',
-  Carpenter: 'from-amber-600 to-orange-700',
-  'AC Repair': 'from-sky-500 to-cyan-600',
-};
+const catBg = {};
 
 const fallbackCats = DEFAULT_CATS.map((name, i) => ({ _id: i, name }));
 
