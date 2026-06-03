@@ -38,7 +38,7 @@ export default function FindProfile() {
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
           <div className="flex gap-2">
             <input value={phone} onChange={e => setPhone(e.target.value)} onKeyDown={e => e.key === 'Enter' && handleSearch()}
-              placeholder="Apna phone number daalein" type="tel"
+              placeholder="Apna phone number daalein" type="tel" maxLength={10}
               className="flex-1 px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 outline-none text-sm" />
             <button onClick={handleSearch} disabled={loading}
               className="px-5 py-3 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl text-sm transition">

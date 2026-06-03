@@ -74,7 +74,7 @@ export default function SignupPage() {
             </div>
             <div>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Phone *</label>
-              <input name="phone" required value={form.phone} onChange={handleChange} placeholder="Mobile number" type="tel"
+              <input name="phone" required value={form.phone} onChange={handleChange} placeholder="Mobile number" type="tel" maxLength={10}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition" />
             </div>
             <div>

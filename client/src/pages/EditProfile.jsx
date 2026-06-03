@@ -65,7 +65,7 @@ export default function EditProfile() {
         <div className="max-w-sm w-full bg-white rounded-2xl shadow-lg border border-gray-100 p-6 text-center">
           <h2 className="text-lg font-bold text-gray-900 mb-2">Edit Profile</h2>
           <p className="text-sm text-gray-500 mb-4">Apne profile ko edit karne ke liye phone number daalein</p>
-          <input value={phone} onChange={e => setPhone(e.target.value)} placeholder="Phone number" type="tel"
+          <input value={phone} onChange={e => setPhone(e.target.value)} placeholder="Phone number" type="tel" maxLength={10}
             className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 outline-none text-sm mb-3" />
           {error && <p className="text-red-500 text-xs mb-2">{error}</p>}
           <button onClick={handleLogin} disabled={loading}
