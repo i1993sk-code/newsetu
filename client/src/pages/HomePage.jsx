@@ -81,7 +81,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-white">
-      <div className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
+      <div className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1920&q=80")', backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-gray-900/50"></div>
         <div className="relative max-w-5xl mx-auto px-4">
@@ -112,7 +112,7 @@ export default function HomePage() {
           <p className="text-gray-400 text-sm sm:text-lg max-w-xl mx-auto mb-8">
             Plumber, Electrician, Tutor, Mechanic — apne shehar me. Free profile, direct contact.
           </p>
-          <div className="max-w-2xl mx-auto">
+          <div className="max-w-2xl mx-auto sticky top-4 z-50">
             <div className="bg-white/10 backdrop-blur-md rounded-2xl p-2 sm:p-3 border border-white/10 shadow-2xl">
               <div className="flex flex-col sm:flex-row gap-2">
                 <div className="flex-1 relative">
