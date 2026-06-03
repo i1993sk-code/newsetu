@@ -4,7 +4,7 @@ import axios from 'axios';
 import { api } from '../api';
 
 export default function SignupPage() {
-  const [form, setForm] = useState({ name: '', businessName: '', phone: '', category: '', city: '', address: '', pincode: '', experience: '', priceRange: '', description: '', services: '' });
+  const [form, setForm] = useState({ name: '', businessName: '', phone: '', category: '', city: '', state: '', address: '', pincode: '', experience: '', priceRange: '', description: '', services: '' });
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
   const [copied, setCopied] = useState(false);
@@ -28,6 +28,7 @@ export default function SignupPage() {
       const res = await axios.post(api.signup, {
         ...form, services: form.services.split(',').map(s => s.trim()).filter(Boolean)
       });
+      setForm({ name: '', businessName: '', phone: '', category: '', city: '', state: '', address: '', pincode: '', experience: '', priceRange: '', description: '', services: '' });
       setResult(res.data);
     } catch (err) {
       alert(err?.response?.data?.message || 'Something went wrong');
@@ -68,12 +69,12 @@ export default function SignupPage() {
           <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 space-y-4">
             <div>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Name *</label>
-              <input name="name" required value={form.name} onChange={handleChange} placeholder="Apna naam"
+              <input name="name" required value={form.name} onChange={handleChange} placeholder="Apna naam" maxLength={50}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition" />
             </div>
             <div>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Business Name</label>
-              <input name="businessName" value={form.businessName} onChange={handleChange} placeholder="Aapke business ka naam"
+              <input name="businessName" value={form.businessName} onChange={handleChange} placeholder="Aapke business ka naam" maxLength={50}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition" />
             </div>
             <div>
@@ -83,44 +84,61 @@ export default function SignupPage() {
             </div>
             <div>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Category *</label>
-              <input name="category" required value={form.category} onChange={handleChange} placeholder="Plumber, Electrician, Tutor..."
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition" />
+              <select name="category" required value={form.category} onChange={handleChange}
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition bg-white">
+                <option value="">Select category</option>
+                {['Plumber','Electrician','Beautician','Tutor','CA','Lawyer','Mechanic','Painter','Carpenter','AC Repair','Cook','Driver','Maid','Security Guard','Photographer','Event Planner','Fitness Trainer','Web Developer','Designer'].map(c => (
+                  <option key={c} value={c}>{c}</option>
+                ))}
+              </select>
             </div>
-            <div>
-              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">City *</label>
-              <input name="city" required value={form.city} onChange={handleChange} placeholder="Aapka city"
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition" />
+            <div className="flex gap-3">
+              <div className="flex-1">
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">City *</label>
+                <input name="city" required value={form.city} onChange={handleChange} placeholder="Aapka city" maxLength={30}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition" />
+              </div>
+              <div className="flex-1">
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">State</label>
+                <select name="state" value={form.state} onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition bg-white">
+                  <option value="">Select</option>
+                  {['Andhra Pradesh','Arunachal Pradesh','Assam','Bihar','Chhattisgarh','Goa','Gujarat','Haryana','Himachal Pradesh','Jharkhand','Karnataka','Kerala','Madhya Pradesh','Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland','Odisha','Punjab','Rajasthan','Sikkim','Tamil Nadu','Telangana','Tripura','Uttar Pradesh','Uttarakhand','West Bengal','Delhi','Chandigarh'].map(s => (
+                    <option key={s} value={s}>{s}</option>
+                  ))}
+                </select>
+              </div>
             </div>
             <div>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Full Address</label>
-              <textarea name="address" value={form.address} onChange={handleChange} placeholder="Mohalla, gali number, landmark..." rows={2}
+              <textarea name="address" value={form.address} onChange={handleChange} placeholder="Mohalla, gali number, landmark..." rows={2} maxLength={100}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition resize-none" />
             </div>
             <div className="flex gap-3">
               <div className="flex-1">
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Pincode</label>
-                <input name="pincode" value={form.pincode} onChange={handleChange} placeholder="825301"
+                <input name="pincode" value={form.pincode} onChange={handleChange} placeholder="825301" maxLength={6}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition" />
               </div>
               <div className="flex-1">
                 <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Experience</label>
-                <input name="experience" value={form.experience} onChange={handleChange} placeholder="5 years"
+                <input name="experience" value={form.experience} onChange={handleChange} placeholder="5" maxLength={2}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition" />
               </div>
             </div>
             <div>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Price Range</label>
-              <input name="priceRange" value={form.priceRange} onChange={handleChange} placeholder="₹200 - ₹500"
+              <input name="priceRange" value={form.priceRange} onChange={handleChange} placeholder="₹200 - ₹500" maxLength={30}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition" />
             </div>
             <div>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">About You / Description</label>
-              <textarea name="description" value={form.description} onChange={handleChange} placeholder="Aapke baare mein thoda batao..." rows={2}
+              <textarea name="description" value={form.description} onChange={handleChange} placeholder="Aapke baare mein thoda batao..." rows={2} maxLength={200}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition resize-none" />
             </div>
             <div>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Services (comma separated)</label>
-              <textarea name="services" value={form.services} onChange={handleChange} placeholder="Pipe fitting, Water tank repair, etc." rows={2}
+              <textarea name="services" value={form.services} onChange={handleChange} placeholder="Pipe fitting, Water tank repair, etc." rows={2} maxLength={100}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition resize-none" />
             </div>
             <button type="submit" disabled={loading}

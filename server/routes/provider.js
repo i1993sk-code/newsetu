@@ -9,7 +9,7 @@ function generateSlug(name) {
 
 router.post('/signup', async (req, res) => {
   try {
-    const { name, businessName, phone, category, city, address, pincode, experience, priceRange, description, services } = req.body;
+    const { name, businessName, phone, category, city, state, address, pincode, experience, priceRange, description, services } = req.body;
     if (!name || !phone || !category || !city) {
       return res.json({ success: false, message: 'Name, phone, category & city required' });
     }
@@ -23,7 +23,7 @@ router.post('/signup', async (req, res) => {
       counter++;
     }
     const provider = await Provider.create({
-      name, businessName, phone, category, city,
+      name, businessName, phone, category, city, state,
       address, pincode, experience, priceRange, description,
       services: services || [],
       slug, plan: 'free', isActive: true
@@ -83,7 +83,7 @@ router.post('/login', async (req, res) => {
 
 router.put('/update/:slug', async (req, res) => {
   try {
-    const { phone, name, businessName, category, city, address, pincode, experience, priceRange, description, services } = req.body;
+    const { phone, name, businessName, category, city, state, address, pincode, experience, priceRange, description, services } = req.body;
     const provider = await Provider.findOne({ slug: req.params.slug });
     if (!provider) return res.json({ success: false, message: 'Provider not found' });
     if (phone !== provider.phone) return res.json({ success: false, message: 'Phone number mismatch' });
@@ -91,6 +91,7 @@ router.put('/update/:slug', async (req, res) => {
     if (businessName !== undefined) provider.businessName = businessName;
     if (category) provider.category = category;
     if (city) provider.city = city;
+    if (state !== undefined) provider.state = state;
     if (address !== undefined) provider.address = address;
     if (pincode !== undefined) provider.pincode = pincode;
     if (experience !== undefined) provider.experience = experience;

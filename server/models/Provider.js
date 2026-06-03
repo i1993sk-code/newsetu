@@ -12,6 +12,7 @@ const providerSchema = new mongoose.Schema({
   priceRange: { type: String },
   experience: { type: String },
   city: { type: String, required: true },
+  state: { type: String },
   pincode: { type: String },
   address: { type: String },
   description: { type: String },
