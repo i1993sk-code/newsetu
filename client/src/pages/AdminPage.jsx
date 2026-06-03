@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { api } from '../api';
 
+const DEFAULT_CATS = ['Plumber','Electrician','Beautician','Tutor','CA','Lawyer','Mechanic','Painter','Carpenter','AC Repair','Cook','Driver','Maid','Security Guard','Photographer','Event Planner','Fitness Trainer','Web Developer','Designer'];
 const CAT_API = api.signup.replace('provider/signup', 'categories');
 
 export default function AdminPage() {
@@ -12,7 +13,7 @@ export default function AdminPage() {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState(DEFAULT_CATS.map((n, i) => ({ _id: i, name: n })));
   const [newCat, setNewCat] = useState('');
   const [form, setForm] = useState({ name: '', businessName: '', phone: '', category: '', district: '', state: 'Jharkhand', address: '', pincode: '', experience: '', priceRange: '', description: '', services: '' });
   const [msg, setMsg] = useState('');
@@ -25,7 +26,7 @@ export default function AdminPage() {
   const loadCategories = async () => {
     try {
       const res = await axios.get(CAT_API, { timeout: 5000 });
-      if (res.data.success) setCategories(res.data.data);
+      if (res.data.success && res.data.data.length > 0) setCategories(res.data.data);
     } catch {}
   };
 

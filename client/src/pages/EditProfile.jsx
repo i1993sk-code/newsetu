@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { api } from '../api';
 
+const DEFAULT_CATS = ['Plumber','Electrician','Beautician','Tutor','CA','Lawyer','Mechanic','Painter','Carpenter','AC Repair','Cook','Driver','Maid','Security Guard','Photographer','Event Planner','Fitness Trainer','Web Developer','Designer'];
 const CAT_API = api.signup.replace('provider/signup', 'categories');
 
 const DISTRICTS = ['Bokaro','Chatra','Deoghar','Dhanbad','Dumka','Garhwa','Giridih','Godda','Gumla','Hazaribagh','Jamtara','Khunti','Koderma','Latehar','Lohardaga','Pakur','Palamu','Ramgarh','Ranchi','Sahebganj','Saraikela Kharsawan','Simdega','Singhbhum (East)','Singhbhum (West)'];
@@ -17,12 +18,12 @@ export default function EditProfile() {
   const [form, setForm] = useState({});
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState('');
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState(DEFAULT_CATS.map((n, i) => ({ _id: i, name: n })));
   const [delConfirm, setDelConfirm] = useState('');
   const [deleting, setDeleting] = useState(false);
 
-  useState(() => {
-    axios.get(CAT_API, { timeout: 5000 }).then(r => { if (r.data.success) setCategories(r.data.data); }).catch(() => {});
+  useEffect(() => {
+    axios.get(CAT_API, { timeout: 5000 }).then(r => { if (r.data.success && r.data.data.length > 0) setCategories(r.data.data); }).catch(() => {});
   }, []);
 
   const handleLogin = async () => {

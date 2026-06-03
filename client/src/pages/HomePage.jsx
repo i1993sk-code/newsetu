@@ -5,6 +5,8 @@ import { api } from '../api';
 
 const CAT_API = api.signup.replace('provider/signup', 'categories');
 
+const DEFAULT_CATS = ['Plumber','Electrician','Beautician','Tutor','CA','Lawyer','Mechanic','Painter','Carpenter','AC Repair','Cook','Driver','Maid','Security Guard','Photographer','Event Planner','Fitness Trainer','Web Developer','Designer'];
+
 const icons = {
   Plumber: '🔧', Electrician: '⚡', Beautician: '💅', Tutor: '📚', CA: '💰',
   Lawyer: '⚖️', Mechanic: '🔩', Painter: '🎨', Carpenter: '🪚', 'AC Repair': '❄️',
@@ -12,17 +14,19 @@ const icons = {
   'Event Planner': '🎉', 'Fitness Trainer': '💪', 'Web Developer': '💻', Designer: '🎯',
 };
 
+const fallbackCats = DEFAULT_CATS.map((name, i) => ({ _id: i, name }));
+
 export default function HomePage() {
   const [search, setSearch] = useState('');
   const [city, setCity] = useState('');
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState(fallbackCats);
   const [focused, setFocused] = useState(false);
   const blurTimer = useRef();
 
   useEffect(() => {
-    axios.get(CAT_API, { timeout: 8000 }).then(r => { if (r.data.success) setCategories(r.data.data); }).catch(() => {});
+    axios.get(CAT_API, { timeout: 5000 }).then(r => { if (r.data.success && r.data.data.length > 0) setCategories(r.data.data); }).catch(() => {});
   }, []);
 
   const filtered = categories.filter(c => {
