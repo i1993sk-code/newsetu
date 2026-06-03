@@ -64,4 +64,41 @@ router.get('/search', async (req, res) => {
   }
 });
 
+router.post('/login', async (req, res) => {
+  try {
+    const { phone, slug } = req.body;
+    if (!phone) return res.json({ success: false, message: 'Phone required' });
+    const filter = slug ? { slug, phone } : { phone };
+    const provider = await Provider.findOne(filter);
+    if (!provider) return res.json({ success: false, message: 'Provider not found' });
+    res.json({ success: true, data: provider });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+router.put('/update/:slug', async (req, res) => {
+  try {
+    const { phone, name, businessName, category, city, address, pincode, experience, priceRange, description, services } = req.body;
+    const provider = await Provider.findOne({ slug: req.params.slug });
+    if (!provider) return res.json({ success: false, message: 'Provider not found' });
+    if (phone !== provider.phone) return res.json({ success: false, message: 'Phone number mismatch' });
+    if (name) provider.name = name;
+    if (businessName !== undefined) provider.businessName = businessName;
+    if (category) provider.category = category;
+    if (city) provider.city = city;
+    if (address !== undefined) provider.address = address;
+    if (pincode !== undefined) provider.pincode = pincode;
+    if (experience !== undefined) provider.experience = experience;
+    if (priceRange !== undefined) provider.priceRange = priceRange;
+    if (description !== undefined) provider.description = description;
+    if (services) provider.services = services;
+    provider.updatedAt = Date.now();
+    await provider.save();
+    res.json({ success: true, message: 'Profile updated', data: provider });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 module.exports = router;
