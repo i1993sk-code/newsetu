@@ -151,4 +151,18 @@ router.delete('/admin/delete/:id', adminAuth, async (req, res) => {
   }
 });
 
+router.post('/delete-profile', async (req, res) => {
+  try {
+    const { phone, slug } = req.body;
+    if (!phone || !slug) return res.json({ success: false, message: 'Phone and slug required' });
+    const provider = await Provider.findOne({ slug });
+    if (!provider) return res.json({ success: false, message: 'Profile not found' });
+    if (provider.phone !== phone) return res.json({ success: false, message: 'Phone number does not match' });
+    await Provider.findByIdAndDelete(provider._id);
+    res.json({ success: true, message: 'Profile deleted' });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 module.exports = router;

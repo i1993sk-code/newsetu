@@ -10,4 +10,5 @@ export const api = {
   updateProvider: (slug) => `${API_BASE}/api/provider/update/${slug}`,
   getProvider: (slug) => `${API_BASE}/api/provider/slug/${slug}`,
   search: `${API_BASE}/api/provider/search`,
+  deleteProfile: `${API_BASE}/api/provider/delete-profile`,
 };

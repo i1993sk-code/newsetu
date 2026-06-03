@@ -1,16 +1,29 @@
 import { useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { api } from '../api';
 
+const CAT_API = api.signup.replace('/signup', '/categories');
+
+const DISTRICTS = ['Bokaro','Chatra','Deoghar','Dhanbad','Dumka','Garhwa','Giridih','Godda','Gumla','Hazaribagh','Jamtara','Khunti','Koderma','Latehar','Lohardaga','Pakur','Palamu','Ramgarh','Ranchi','Sahebganj','Saraikela Kharsawan','Simdega','Singhbhum (East)','Singhbhum (West)'];
+const STATES = ['Jharkhand','Bihar','West Bengal','Odisha','Uttar Pradesh','Madhya Pradesh','Chhattisgarh','Assam','Andhra Pradesh','Arunachal Pradesh','Goa','Gujarat','Haryana','Himachal Pradesh','Karnataka','Kerala','Maharashtra','Manipur','Meghalaya','Mizoram','Nagaland','Punjab','Rajasthan','Sikkim','Tamil Nadu','Telangana','Tripura','Uttarakhand','Delhi','Chandigarh'];
+
 export default function EditProfile() {
   const { slug } = useParams();
+  const navigate = useNavigate();
   const [phone, setPhone] = useState('');
   const [loading, setLoading] = useState(false);
   const [profile, setProfile] = useState(null);
   const [form, setForm] = useState({});
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [delConfirm, setDelConfirm] = useState('');
+  const [deleting, setDeleting] = useState(false);
+
+  useState(() => {
+    axios.get(CAT_API, { timeout: 5000 }).then(r => { if (r.data.success) setCategories(r.data.data); }).catch(() => {});
+  }, []);
 
   const handleLogin = async () => {
     if (!phone) return;
@@ -24,7 +37,8 @@ export default function EditProfile() {
           name: res.data.data.name || '',
           businessName: res.data.data.businessName || '',
           category: res.data.data.category || '',
-          city: res.data.data.city || '',
+          district: res.data.data.district || '',
+          state: res.data.data.state || 'Jharkhand',
           address: res.data.data.address || '',
           pincode: res.data.data.pincode || '',
           experience: res.data.data.experience || '',
@@ -63,6 +77,22 @@ export default function EditProfile() {
     setLoading(false);
   };
 
+  const handleDelete = async () => {
+    if (delConfirm !== phone) return alert('Phone number match nahi karta');
+    if (!confirm('Kya aap sure hain? Profile delete ho jayega permanently.')) return;
+    setDeleting(true);
+    try {
+      const res = await axios.post(api.deleteProfile, { phone, slug });
+      if (res.data.success) {
+        alert('Profile deleted ✅');
+        navigate('/');
+      } else {
+        alert(res.data.message);
+      }
+    } catch { alert('Delete failed'); }
+    setDeleting(false);
+  };
+
   if (!profile) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-white to-orange-50 flex items-center justify-center p-4">
@@ -90,7 +120,7 @@ export default function EditProfile() {
           View Profile
         </Link>
 
-        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6">
+        <div className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 mb-4">
           <h2 className="text-lg font-bold text-gray-900 mb-4">Edit Profile</h2>
 
           {saved && (
@@ -103,54 +133,68 @@ export default function EditProfile() {
           <div className="space-y-3">
             <div>
               <label className="block text-xs font-semibold text-gray-500 mb-1">Name *</label>
-              <input name="name" value={form.name} onChange={handleChange}
+              <input name="name" value={form.name} onChange={handleChange} maxLength={50}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 outline-none text-sm" />
             </div>
             <div>
               <label className="block text-xs font-semibold text-gray-500 mb-1">Business Name</label>
-              <input name="businessName" value={form.businessName} onChange={handleChange}
+              <input name="businessName" value={form.businessName} onChange={handleChange} maxLength={50}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 outline-none text-sm" />
             </div>
             <div>
               <label className="block text-xs font-semibold text-gray-500 mb-1">Category *</label>
-              <input name="category" value={form.category} onChange={handleChange}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 outline-none text-sm" />
+              <select name="category" value={form.category} onChange={handleChange}
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 outline-none text-sm bg-white">
+                {categories.map(c => <option key={c._id} value={c.name}>{c.name}</option>)}
+              </select>
             </div>
-            <div>
-              <label className="block text-xs font-semibold text-gray-500 mb-1">City *</label>
-              <input name="city" value={form.city} onChange={handleChange}
-                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 outline-none text-sm" />
+            <div className="flex gap-3">
+              <div className="flex-1">
+                <label className="block text-xs font-semibold text-gray-500 mb-1">District</label>
+                <select name="district" value={form.district} onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 outline-none text-sm bg-white">
+                  <option value="">Select district</option>
+                  {DISTRICTS.map(d => <option key={d} value={d}>{d}</option>)}
+                </select>
+              </div>
+              <div className="flex-1">
+                <label className="block text-xs font-semibold text-gray-500 mb-1">State</label>
+                <select name="state" value={form.state} onChange={handleChange}
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 outline-none text-sm bg-white">
+                  {STATES.map(s => <option key={s} value={s}>{s}</option>)}
+                </select>
+              </div>
             </div>
             <div>
               <label className="block text-xs font-semibold text-gray-500 mb-1">Full Address</label>
-              <textarea name="address" value={form.address} onChange={handleChange} rows={2}
+              <textarea name="address" value={form.address} onChange={handleChange} rows={2} maxLength={100}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 outline-none text-sm resize-none" />
             </div>
             <div className="flex gap-3">
               <div className="flex-1">
                 <label className="block text-xs font-semibold text-gray-500 mb-1">Pincode</label>
-                <input name="pincode" value={form.pincode} onChange={handleChange}
+                <input name="pincode" value={form.pincode} onChange={handleChange} maxLength={6}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 outline-none text-sm" />
               </div>
               <div className="flex-1">
                 <label className="block text-xs font-semibold text-gray-500 mb-1">Experience</label>
-                <input name="experience" value={form.experience} onChange={handleChange}
+                <input name="experience" value={form.experience} onChange={handleChange} maxLength={2}
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 outline-none text-sm" />
               </div>
             </div>
             <div>
               <label className="block text-xs font-semibold text-gray-500 mb-1">Price Range</label>
-              <input name="priceRange" value={form.priceRange} onChange={handleChange}
+              <input name="priceRange" value={form.priceRange} onChange={handleChange} maxLength={30}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 outline-none text-sm" />
             </div>
             <div>
               <label className="block text-xs font-semibold text-gray-500 mb-1">Description</label>
-              <textarea name="description" value={form.description} onChange={handleChange} rows={2}
+              <textarea name="description" value={form.description} onChange={handleChange} rows={2} maxLength={200}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 outline-none text-sm resize-none" />
             </div>
             <div>
-              <label className="block text-xs font-semibold text-gray-500 mb-1">Services (comma)</label>
-              <input name="services" value={form.services} onChange={handleChange}
+              <label className="block text-xs font-semibold text-gray-500 mb-1">Services (comma separated)</label>
+              <input name="services" value={form.services} onChange={handleChange} maxLength={100}
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 outline-none text-sm" />
             </div>
             <button onClick={handleSave} disabled={loading}
@@ -158,6 +202,17 @@ export default function EditProfile() {
               {loading ? 'Saving...' : 'Save Changes'}
             </button>
           </div>
+        </div>
+
+        <div className="bg-white rounded-2xl shadow-lg border border-red-100 p-6">
+          <h3 className="text-base font-bold text-red-600 mb-2">🚨 Delete Profile</h3>
+          <p className="text-xs text-gray-500 mb-3">Profile delete karne ke liye apna phone number neeche daalein aur confirm karein.</p>
+          <input value={delConfirm} onChange={e => setDelConfirm(e.target.value)} placeholder="Phone number type karein" type="tel" maxLength={10}
+            className="w-full px-4 py-3 rounded-xl border border-red-200 focus:border-red-400 outline-none text-sm mb-3" />
+          <button onClick={handleDelete} disabled={deleting || delConfirm !== phone}
+            className="w-full py-3 bg-red-500 hover:bg-red-600 disabled:bg-red-300 text-white font-bold rounded-xl text-sm transition">
+            {deleting ? 'Deleting...' : 'Delete My Profile'}
+          </button>
         </div>
       </div>
     </div>
