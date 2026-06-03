@@ -4,7 +4,7 @@ import axios from 'axios';
 import { api } from '../api';
 
 export default function SignupPage() {
-  const [form, setForm] = useState({ name: '', businessName: '', phone: '', category: '', city: '', services: '' });
+  const [form, setForm] = useState({ name: '', businessName: '', phone: '', category: '', city: '', address: '', pincode: '', experience: '', priceRange: '', description: '', services: '' });
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
 
@@ -76,6 +76,33 @@ export default function SignupPage() {
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">City *</label>
               <input name="city" required value={form.city} onChange={handleChange} placeholder="Aapka city"
                 className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition" />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Full Address</label>
+              <textarea name="address" value={form.address} onChange={handleChange} placeholder="Mohalla, gali number, landmark..." rows={2}
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition resize-none" />
+            </div>
+            <div className="flex gap-3">
+              <div className="flex-1">
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Pincode</label>
+                <input name="pincode" value={form.pincode} onChange={handleChange} placeholder="825301"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition" />
+              </div>
+              <div className="flex-1">
+                <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Experience</label>
+                <input name="experience" value={form.experience} onChange={handleChange} placeholder="5 years"
+                  className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition" />
+              </div>
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Price Range</label>
+              <input name="priceRange" value={form.priceRange} onChange={handleChange} placeholder="₹200 - ₹500"
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition" />
+            </div>
+            <div>
+              <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">About You / Description</label>
+              <textarea name="description" value={form.description} onChange={handleChange} placeholder="Aapke baare mein thoda batao..." rows={2}
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition resize-none" />
             </div>
             <div>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Services (comma separated)</label>

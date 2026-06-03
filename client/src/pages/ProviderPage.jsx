@@ -72,7 +72,7 @@ export default function ProviderPage() {
                   <span className="text-lg">📍</span>
                   <div>
                     <p className="text-xs text-gray-400">Location</p>
-                    <p className="text-sm font-medium text-gray-700">{provider.city}{provider.pincode ? ` — ${provider.pincode}` : ''}</p>
+                    <p className="text-sm font-medium text-gray-700">{provider.address ? `${provider.address}, ` : ''}{provider.city}{provider.pincode ? ` — ${provider.pincode}` : ''}</p>
                   </div>
                 </div>
                 {provider.experience && (

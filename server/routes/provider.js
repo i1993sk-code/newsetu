@@ -9,7 +9,7 @@ function generateSlug(name) {
 
 router.post('/signup', async (req, res) => {
   try {
-    const { name, businessName, phone, category, city, services } = req.body;
+    const { name, businessName, phone, category, city, address, pincode, experience, priceRange, description, services } = req.body;
     if (!name || !phone || !category || !city) {
       return res.json({ success: false, message: 'Name, phone, category & city required' });
     }
@@ -21,6 +21,7 @@ router.post('/signup', async (req, res) => {
     }
     const provider = await Provider.create({
       name, businessName, phone, category, city,
+      address, pincode, experience, priceRange, description,
       services: services || [],
       slug, plan: 'free', isActive: true
     });
