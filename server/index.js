@@ -14,6 +14,10 @@ mongoose.connect(process.env.MONGODB_URI)
 const providerRoutes = require('./routes/provider');
 app.use('/api/provider', providerRoutes);
 
+app.get('/', (req, res) => {
+  res.json({ status: 'ok', message: 'NewSetu API is running' });
+});
+
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'NewSetu API is running' });
 });
