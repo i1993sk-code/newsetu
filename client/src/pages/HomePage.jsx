@@ -29,6 +29,7 @@ export default function HomePage() {
     axios.get(CAT_API, { timeout: 5000 }).then(r => { if (r.data.success && r.data.data.length > 0) setCategories(r.data.data); }).catch(() => {});
   }, []);
 
+  useEffect(() => { document.title = 'NewSetu - Jharkhand me Plumber, Electrician aur service providers dhundhein'; }, []);
   const filtered = categories.filter(c => {
     if (!search.trim()) return true;
     return c.name.toLowerCase().includes(search.toLowerCase());

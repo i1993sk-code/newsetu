@@ -28,6 +28,35 @@ const PORT = process.env.PORT || 5000;
 
 const Category = require('./models/Category');
 
+const SITE_URL = 'https://newsetu.in';
+
+app.get('/sitemap.xml', async (req, res) => {
+  try {
+    const providers = await Provider.find({ isActive: true }).select('slug updatedAt');
+    const urls = providers.map(p => `  <url>
+    <loc>${SITE_URL}/provider/${p.slug}</loc>
+    <lastmod>${p.updatedAt?.toISOString()?.split('T')[0] || new Date().toISOString().split('T')[0]}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`).join('\n');
+    res.header('Content-Type', 'application/xml');
+    res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>${SITE_URL}/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>${SITE_URL}/signup</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+${urls}
+</urlset>`);
+  } catch { res.status(500).send('Error generating sitemap'); }
+});
+
 const DEFAULT_CATEGORIES = ['Plumber','Electrician','Beautician','Tutor','CA','Lawyer','Mechanic','Painter','Carpenter','AC Repair','Cook','Driver','Maid','Security Guard','Photographer','Event Planner','Fitness Trainer','Web Developer','Designer'];
 
 mongoose.connect(process.env.MONGODB_URI)

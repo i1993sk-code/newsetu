@@ -10,7 +10,16 @@ export default function ProviderPage() {
 
   useEffect(() => {
     axios.get(api.getProvider(slug))
-      .then(res => { if (res.data.success) setProvider(res.data.data) })
+      .then(res => {
+        if (res.data.success) {
+          setProvider(res.data.data);
+          const p = res.data.data;
+          const name = p.businessName || p.name;
+          const loc = p.district || p.city || 'Jharkhand';
+          document.title = name + ' - ' + p.category + ' in ' + loc + ' | NewSetu';
+          document.querySelector('meta[name="description"]')?.setAttribute('content', name + ' - ' + p.category + ' in ' + loc + '. Call ' + p.phone + ' for ' + (p.services?.join(', ') || p.category) + '.');
+        }
+      })
       .catch(() => {})
       .finally(() => setLoading(false));
   }, [slug]);

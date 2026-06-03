@@ -15,6 +15,7 @@ export default function SignupPage() {
 
   useEffect(() => {
     axios.get(CAT_API, { timeout: 5000 }).then(r => { if (r.data.success && r.data.data.length > 0) setCategories(r.data.data); }).catch(() => {});
+    document.title = 'Free Profile Banayein - NewSetu';
   }, []);
 
   const copyLink = () => {
