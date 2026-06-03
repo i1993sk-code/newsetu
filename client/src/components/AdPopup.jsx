@@ -4,14 +4,11 @@ export default function AdPopup() {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
-    if (!localStorage.getItem('adShown_newsetu')) {
-      const t = setTimeout(() => setVisible(true), 1500);
-      return () => clearTimeout(t);
-    }
+    const t = setTimeout(() => setVisible(true), 1500);
+    return () => clearTimeout(t);
   }, []);
 
   const close = () => {
-    localStorage.setItem('adShown_newsetu', '1');
     setVisible(false);
   };
 
