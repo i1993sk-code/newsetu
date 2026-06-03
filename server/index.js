@@ -15,7 +15,7 @@ app.get(['/', '/api/health'], (req, res) => {
 const providerRoutes = require('./routes/provider');
 app.use('/api/provider', providerRoutes);
 
-const PORT = process.env.PORT || 10000;
+const PORT = process.env.PORT || 5000;
 
 async function start() {
   try {
