@@ -18,8 +18,7 @@ export default function HomePage() {
   const [results, setResults] = useState(null);
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [suggestions, setSuggestions] = useState([]);
-  const [showSugs, setShowSugs] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
   const ref = useRef();
 
   useEffect(() => {
@@ -27,27 +26,21 @@ export default function HomePage() {
   }, []);
 
   useEffect(() => {
-    if (search.trim()) {
-      const q = search.toLowerCase();
-      setSuggestions(categories.filter(c => c.name.toLowerCase().includes(q)).slice(0, 6));
-      setShowSugs(true);
-    } else {
-      setSuggestions([]);
-      setShowSugs(false);
-    }
-  }, [search, categories]);
-
-  useEffect(() => {
-    const click = (e) => { if (ref.current && !ref.current.contains(e.target)) setShowSugs(false); };
+    const click = (e) => { if (ref.current && !ref.current.contains(e.target)) setShowDropdown(false); };
     document.addEventListener('mousedown', click);
     return () => document.removeEventListener('mousedown', click);
   }, []);
+
+  const filtered = categories.filter(c => {
+    if (!search.trim()) return true;
+    return c.name.toLowerCase().includes(search.toLowerCase());
+  }).slice(0, 8);
 
   const doSearch = async (cat) => {
     const q = cat || search;
     if (!q) return;
     setLoading(true);
-    setShowSugs(false);
+    setShowDropdown(false);
     try {
       const res = await axios.get(api.search, { params: { category: q, city } });
       setResults(res.data);
@@ -69,17 +62,20 @@ export default function HomePage() {
           <div className="flex flex-col sm:flex-row gap-3" ref={ref}>
             <div className="flex-1 relative">
               <svg className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-              <input placeholder="Kya chahiye? Plumber, Electrician..." value={search} onChange={e => { setSearch(e.target.value); setResults(null); }} onKeyDown={e => e.key === 'Enter' && doSearch()}
+              <input placeholder="Kya chahiye? Plumber, Electrician..." value={search} onFocus={() => { if (!results) setShowDropdown(true); }} onChange={e => { setSearch(e.target.value); setResults(null); setShowDropdown(true); }} onKeyDown={e => e.key === 'Enter' && doSearch()}
                 className="w-full pl-10 pr-4 py-3 rounded-xl border border-gray-200 focus:border-orange-400 focus:ring-2 focus:ring-orange-100 outline-none text-sm transition" />
-              {showSugs && suggestions.length > 0 && (
+              {showDropdown && filtered.length > 0 && (
                 <div className="absolute z-10 top-full mt-1 left-0 right-0 bg-white border border-gray-100 rounded-xl shadow-lg overflow-hidden">
-                  {suggestions.map(c => (
+                  {filtered.map(c => (
                     <button key={c._id} onClick={() => { setSearch(c.name); doSearch(c.name); }}
-                      className="w-full text-left px-4 py-2.5 text-sm hover:bg-orange-50 flex items-center gap-3">
-                      <span>{icons[c.name] || '🔹'}</span>
+                      className="w-full text-left px-4 py-3 text-sm hover:bg-orange-50 flex items-center gap-3 border-b border-gray-50 last:border-0">
+                      <span className="text-lg">{icons[c.name] || '🔹'}</span>
                       <span className="font-medium">{c.name}</span>
                     </button>
                   ))}
+                  {search.trim() && filtered.length === 0 && categories.length > 0 && (
+                    <div className="px-4 py-3 text-sm text-gray-400">No matching category</div>
+                  )}
                 </div>
               )}
             </div>
