@@ -15,16 +15,16 @@ const icons = {
 };
 
 const catImg = {
-  Plumber: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&q=80',
+  Plumber: 'https://images.unsplash.com/photo-1592210454359-9043f067919b?w=400&q=80',
   Electrician: 'https://images.unsplash.com/photo-1621905251918-48416bd8575a?w=400&q=80',
   Beautician: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=400&q=80',
   Tutor: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=400&q=80',
   CA: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=400&q=80',
   Lawyer: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=400&q=80',
   Mechanic: 'https://images.unsplash.com/photo-1530046339160-ce3e530c7d2f?w=400&q=80',
-  Painter: 'https://images.unsplash.com/photo-1562259929-b4e1fd3aef09?w=400&q=80',
-  Carpenter: 'https://images.unsplash.com/photo-1613665813446-82a78c468a1d?w=400&q=80',
-  'AC Repair': 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400&q=80',
+  Painter: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=400&q=80',
+  Carpenter: 'https://images.unsplash.com/photo-1617529497471-9218637f4abf?w=400&q=80',
+  'AC Repair': 'https://images.unsplash.com/photo-1631549916768-4119b2e5f926?w=400&q=80',
   Cook: 'https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=400&q=80',
   Driver: 'https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?w=400&q=80',
   Maid: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&q=80',
