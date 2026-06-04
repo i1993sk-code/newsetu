@@ -97,36 +97,6 @@ export default function HomePage() {
       <div className="relative bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=1920&q=80")', backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-gray-900/50"></div>
-        <style>{`
-          @keyframes float1{0%,100%{transform:translate(0,0) rotate(0deg)}25%{transform:translate(20px,-25px) rotate(5deg)}50%{transform:translate(-12px,-40px) rotate(-3deg)}75%{transform:translate(25px,-18px) rotate(4deg)}}
-          @keyframes float2{0%,100%{transform:translate(0,0) rotate(0deg)}25%{transform:translate(-22px,-18px) rotate(-5deg)}50%{transform:translate(15px,-35px) rotate(3deg)}75%{transform:translate(-18px,-12px) rotate(-4deg)}}
-          @keyframes float3{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(25px,-30px) scale(1.15)}66%{transform:translate(-18px,-12px) scale(.88)}}
-          @keyframes float4{0%,100%{transform:translate(0,0) rotateY(0deg)}50%{transform:translate(-25px,-25px) rotateY(360deg)}}
-          @keyframes bounceSlow{0%,100%{transform:translateY(0)}50%{transform:translateY(-15px)}}
-          @keyframes appear{from{opacity:0;transform:scale(0) rotate(-30deg)}to{opacity:1;transform:scale(1) rotate(0deg)}}
-          .float-item{position:absolute;pointer-events:none;z-index:0;font-size:34px;opacity:.65;animation-fill-mode:both;filter:drop-shadow(0 4px 12px rgba(249,115,22,.3))}
-          .float-item:nth-child(2){animation-delay:0s}
-          .float-item:nth-child(3){animation-delay:.3s}
-          .float-item:nth-child(4){animation-delay:.6s}
-          .float-item:nth-child(5){animation-delay:.9s}
-          .float-item:nth-child(6){animation-delay:1.2s}
-          .float-item:nth-child(7){animation-delay:1.5s}
-          .float-item:nth-child(8){animation-delay:1.8s}
-          .float-item:nth-child(9){animation-delay:2.1s}
-          .float-item:nth-child(10){animation-delay:2.4s}
-          .float-item:nth-child(11){animation-delay:2.7s}
-          @media(max-width:640px){.float-item{font-size:22px;opacity:.4}}
-        `}</style>
-        <div className="float-item" style={{top:'6%',left:'3%',animation:'appear .5s backwards, float1 6s ease-in-out infinite 2.5s'}}>🔧</div>
-        <div className="float-item" style={{top:'12%',right:'6%',animation:'appear .5s backwards .3s, float2 7s ease-in-out infinite 2.8s'}}>⚡</div>
-        <div className="float-item" style={{bottom:'18%',left:'7%',animation:'appear .5s backwards .6s, float3 5s ease-in-out infinite 2.3s'}}>🎨</div>
-        <div className="float-item" style={{bottom:'22%',right:'4%',animation:'appear .5s backwards .9s, float4 8s ease-in-out infinite 2.6s'}}>🪚</div>
-        <div className="float-item" style={{top:'38%',left:'2%',animation:'appear .5s backwards 1.2s, bounceSlow 3s ease-in-out infinite 2.2s'}}>📚</div>
-        <div className="float-item" style={{top:'48%',right:'2%',animation:'appear .5s backwards 1.5s, float1 9s ease-in-out infinite 3s'}}>🍳</div>
-        <div className="float-item" style={{top:'72%',left:'4%',animation:'appear .5s backwards 1.8s, float3 6.5s ease-in-out infinite 2.7s'}}>🚗</div>
-        <div className="float-item" style={{top:'28%',right:'3%',animation:'appear .5s backwards 2.1s, bounceSlow 4s ease-in-out infinite 2.5s'}}>💅</div>
-        <div className="float-item" style={{bottom:'12%',right:'14%',animation:'appear .5s backwards 2.4s, float2 5.5s ease-in-out infinite 2.9s'}}>❄️</div>
-        <div className="float-item" style={{top:'62%',left:'6%',animation:'appear .5s backwards 2.7s, float4 7.5s ease-in-out infinite 3.2s'}}>📸</div>
         <div className="relative max-w-5xl mx-auto px-4">
           <div className="flex items-center justify-between py-4 sm:py-5 border-b border-white/10">
             <Link to="/" className="flex items-center gap-2.5">
