@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pamphlet - Website Banao</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800;900&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Poppins',sans-serif;background:#eee;display:flex;justify-content:center;padding:30px}
+.pamphlet{max-width:400px;width:100%;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 10px 40px rgba(0,0,0,.15)}
+/* Hero */
+.hero{background:linear-gradient(135deg,#f97316,#ec4899);padding:36px 24px 28px;text-align:center;position:relative;overflow:hidden}
+.hero::after{content:'⚡';position:absolute;bottom:-10px;right:-10px;font-size:80px;opacity:.1}
+.hero h1{font-size:28px;font-weight:900;color:#fff;letter-spacing:1px}
+.hero .tagline{color:rgba(255,255,255,.85);font-size:13px;margin-top:4px;font-weight:600}
+.hero .price{display:inline-block;margin-top:12px;padding:6px 20px;background:#fff;color:#f97316;font-size:18px;font-weight:900;border-radius:8px;box-shadow:0 4px 15px rgba(0,0,0,.15)}
+/* Section */
+.section{padding:20px 24px}
+.section-title{font-size:16px;font-weight:800;color:#1e293b;text-align:center;margin-bottom:12px}
+/* Grid */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.item{background:linear-gradient(135deg,#fef3c7,#fce7f3);border-radius:10px;padding:10px;text-align:center;border:1px solid rgba(0,0,0,.04)}
+.item .icon{font-size:24px;margin-bottom:4px}
+.item .label{font-size:11px;font-weight:700;color:#1e293b}
+/* Price Box */
+.price-box{text-align:center;background:linear-gradient(135deg,#1e293b,#334155);border-radius:12px;padding:16px;color:#fff;margin-bottom:14px}
+.price-box .big{font-size:32px;font-weight:900}
+.price-box .big span{color:#f97316}
+.price-box .sub{font-size:11px;opacity:.8;margin-top:2px}
+/* Features */
+.features{list-style:none;margin-bottom:14px}
+.features li{font-size:12px;padding:5px 0;display:flex;align-items:center;gap:6px;color:#475569;border-bottom:1px solid #f1f5f9}
+.features li:last-child{border:none}
+/* CTA */
+.cta{display:block;text-align:center;padding:14px;border-radius:12px;background:linear-gradient(135deg,#f97316,#ec4899);color:#fff;font-size:16px;font-weight:800;text-decoration:none;cursor:pointer;margin-bottom:10px}
+.cta:hover{opacity:.95}
+/* Contact */
+.contact{text-align:center;border-top:1px solid #f1f5f9;padding:14px 24px;font-size:12px;color:#94a3b8}
+.contact strong{color:#1e293b;display:block;font-size:14px;margin-bottom:2px}
+@media(max-width:400px){.hero h1{font-size:22px}.grid{grid-template-columns:1fr}}
+@media print{body{background:#fff;padding:0}.pamphlet{max-width:100%;border-radius:0;box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="pamphlet">
+  <div class="hero">
+    <h1>🌐 Website</h1>
+    <p class="tagline">Apne business ko online le jayein — Aasan, Sasta, Professional</p>
+    <div class="price">₹5,000 से शुरू</div>
+  </div>
+  <div class="section">
+    <div class="section-title">हम बनाते हैं</div>
+    <div class="grid">
+      <div class="item"><div class="icon">🛍️</div><div class="label">Shop / Store</div></div>
+      <div class="item"><div class="icon">🏥</div><div class="label">Clinic / Doctor</div></div>
+      <div class="item"><div class="icon">📚</div><div class="label">Coaching</div></div>
+      <div class="item"><div class="icon">🍕</div><div class="label">Restaurant</div></div>
+      <div class="item"><div class="icon">🔧</div><div class="label">Service Provider</div></div>
+      <div class="item"><div class="icon">🏨</div><div class="label">Hotel / PG</div></div>
+    </div>
+    <div class="price-box">
+      <div class="big">₹<span>5,000</span> - 15,000</div>
+      <div class="sub">एक बार का खर्च — कोई monthly fee नहीं!</div>
+    </div>
+    <ul class="features">
+      <li>✅ Google पर दिखेगा — नए customer मिलेंगे</li>
+      <li>✅ Mobile-friendly — हर फोन पर सही दिखेगा</li>
+      <li>✅ WhatsApp से ऑर्डर / कॉल का ऑप्शन</li>
+      <li>✅ FREE Hosting — lifetime, कोई extra charge नहीं</li>
+      <li>✅ अपना domain name — aapki apni website</li>
+    </ul>
+    <a class="cta" href="tel:+919608354372">📞 अभी कॉल करें</a>
+    <p style="text-align:center;font-size:11px;color:#94a3b8;margin-bottom:4px">या WhatsApp करें</p>
+  </div>
+  <div class="contact">
+    <strong>Santosh Kumar</strong>
+    📞 +91-960835372<br>
+    🌐 newsetu.in
+  </div>
+</div>
+</body>
+</html>
