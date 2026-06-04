@@ -10,6 +10,7 @@ export default function SignupPage() {
   const [form, setForm] = useState({ name: '', businessName: '', phone: '', category: '', district: '', state: 'Jharkhand', address: '', pincode: '', experience: '', description: '', services: '' });
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState(null);
+  const [error, setError] = useState('');
   const [copied, setCopied] = useState(false);
   const [categories, setCategories] = useState(DEFAULT_CATS.map((n, i) => ({ _id: i, name: n })));
 
@@ -32,15 +33,20 @@ export default function SignupPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError('');
     setLoading(true);
     try {
       const res = await axios.post(api.signup, {
         ...form, services: form.services.split(',').map(s => s.trim()).filter(Boolean)
       });
-      setForm({ name: '', businessName: '', phone: '', category: '', district: '', state: 'Jharkhand', address: '', pincode: '', experience: '', description: '', services: '' });
-      setResult(res.data);
+      if (res.data.success) {
+        setForm({ name: '', businessName: '', phone: '', category: '', district: '', state: 'Jharkhand', address: '', pincode: '', experience: '', description: '', services: '' });
+        setResult(res.data);
+      } else {
+        setError(res.data.message);
+      }
     } catch (err) {
-      alert(err?.response?.data?.message || 'Something went wrong');
+      setError(err?.response?.data?.message || 'Something went wrong');
     }
     setLoading(false);
   };
@@ -76,6 +82,11 @@ export default function SignupPage() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 space-y-4">
+            {error && (
+              <div className="bg-red-50 border border-red-200 rounded-xl px-4 py-3 text-red-600 text-sm font-medium">
+                {error}
+              </div>
+            )}
             <div>
               <label className="block text-xs font-semibold text-gray-500 uppercase tracking-wider mb-1.5">Name *</label>
               <input name="name" required value={form.name} onChange={handleChange} placeholder="Apna naam" maxLength={50}

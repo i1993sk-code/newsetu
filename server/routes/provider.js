@@ -16,6 +16,10 @@ router.post('/signup', async (req, res) => {
     if (!/^\d{10}$/.test(phone)) {
       return res.json({ success: false, message: 'Phone number must be exactly 10 digits' });
     }
+    const existing = await Provider.findOne({ phone });
+    if (existing) {
+      return res.json({ success: false, message: 'Phone number already registered! Kisi aur category se register karna hai to pehle purana profile delete karein.' });
+    }
     let slug = generateSlug(businessName || name);
     let counter = 1;
     while (await Provider.findOne({ slug })) {
