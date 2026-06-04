@@ -183,4 +183,31 @@ router.post('/report/:slug', async (req, res) => {
   }
 });
 
+router.post('/track-call/:slug', async (req, res) => {
+  try {
+    const provider = await Provider.findOne({ slug: req.params.slug });
+    if (!provider) return res.json({ success: false, message: 'Provider not found' });
+    provider.totalCalls += 1;
+    await provider.save();
+    res.json({ success: true, totalCalls: provider.totalCalls });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
+router.get('/similar/:category', async (req, res) => {
+  try {
+    const { category } = req.params;
+    const { exclude } = req.query;
+    const providers = await Provider.find({
+      category: { $regex: category, $options: 'i' },
+      isActive: true,
+      slug: { $ne: exclude || '' }
+    }).sort({ averageRating: -1, plan: -1 }).limit(4);
+    res.json({ success: true, data: providers });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err.message });
+  }
+});
+
 module.exports = router;

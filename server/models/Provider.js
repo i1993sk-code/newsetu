@@ -21,6 +21,8 @@ const providerSchema = new mongoose.Schema({
   plan: { type: String, enum: ['free', 'basic', 'premium'], default: 'free' },
   isActive: { type: Boolean, default: true },
   expiresAt: { type: Date },
+  reportedAt: { type: Date },
+  reportReason: { type: String },
   reviews: [{
     customerName: String,
     rating: Number,

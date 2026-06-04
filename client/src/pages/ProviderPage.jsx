@@ -3,12 +3,28 @@ import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { api } from '../api';
 
+const icons = {
+  Plumber: '🔧', Electrician: '⚡', Beautician: '💅', Tutor: '📚', CA: '💰',
+  Lawyer: '⚖️', Mechanic: '🔩', Painter: '🎨', Carpenter: '🪚', 'AC Repair': '❄️',
+  Cook: '🍳', Driver: '🚗', Maid: '🧹', 'Security Guard': '🛡️', Photographer: '📸',
+  'Event Planner': '🎉', 'Fitness Trainer': '💪', 'Web Developer': '💻', Designer: '🎯',
+};
+
 export default function ProviderPage() {
   const { slug } = useParams();
   const [provider, setProvider] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showPhone, setShowPhone] = useState(false);
   const [reported, setReported] = useState(false);
+  const [similar, setSimilar] = useState([]);
+  const [callCounted, setCallCounted] = useState(false);
+
+  const handleCall = async () => {
+    if (!callCounted) {
+      try { await axios.post(api.trackCall(slug)); } catch {}
+      setCallCounted(true);
+    }
+  };
 
   const handleReport = async () => {
     if (reported) return;
@@ -30,6 +46,9 @@ export default function ProviderPage() {
           const loc = p.district || p.city || 'Jharkhand';
           document.title = name + ' - ' + p.category + ' in ' + loc + ' | NewSetu';
           document.querySelector('meta[name="description"]')?.setAttribute('content', name + ' - ' + p.category + ' in ' + loc + '. Call ' + p.phone + ' for ' + (p.services?.join(', ') || p.category) + '.');
+          axios.get(api.similarProviders(p.category, slug), { timeout: 5000 })
+            .then(r => { if (r.data.success) setSimilar(r.data.data); })
+            .catch(() => {});
         }
       })
       .catch(() => {})
@@ -70,8 +89,19 @@ export default function ProviderPage() {
             </div>
             <h1 className="text-2xl font-bold text-white">{provider.businessName || provider.name}</h1>
             <p className="text-orange-300 text-sm font-medium mt-1">{provider.category}</p>
-            {provider.plan === 'premium' && (
-              <span className="inline-block mt-2 px-3 py-0.5 bg-yellow-400 text-yellow-900 text-xs font-semibold rounded-full">⭐ Premium</span>
+            <div className="flex items-center justify-center gap-2 mt-2">
+              {provider.isVerified && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-blue-500 text-white text-xs font-semibold rounded-full">✅ Verified</span>
+              )}
+              {provider.plan === 'premium' && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-yellow-400 text-yellow-900 text-xs font-semibold rounded-full">⭐ Premium</span>
+              )}
+            </div>
+            {provider.averageRating > 0 && (
+              <div className="mt-2 flex items-center justify-center gap-1 text-sm">
+                <span className="text-yellow-400">{'★'.repeat(Math.round(provider.averageRating))}{'☆'.repeat(5 - Math.round(provider.averageRating))}</span>
+                <span className="text-gray-300 text-xs">({provider.reviews?.length || 0})</span>
+              </div>
             )}
           </div>
 
@@ -101,7 +131,16 @@ export default function ProviderPage() {
                     <span className="text-lg">⏱</span>
                     <div>
                       <p className="text-xs text-gray-400">Experience</p>
-                      <p className="text-sm font-medium text-gray-700">{provider.experience}</p>
+                      <p className="text-sm font-medium text-gray-700">{provider.experience} years</p>
+                    </div>
+                  </div>
+                )}
+                {provider.totalCalls > 0 && (
+                  <div className="flex items-center gap-3">
+                    <span className="text-lg">📞</span>
+                    <div>
+                      <p className="text-xs text-gray-400">Total Calls</p>
+                      <p className="text-sm font-medium text-gray-700">{provider.totalCalls}+ calls received</p>
                     </div>
                   </div>
                 )}
@@ -130,7 +169,7 @@ export default function ProviderPage() {
               </div>
             ) : (
               <>
-                <a href={`tel:${provider.phone}`}
+                <a href={`tel:${provider.phone}`} onClick={handleCall}
                   className="flex items-center justify-center gap-2 w-full py-3.5 bg-gray-900 hover:bg-gray-800 text-white font-semibold rounded-xl transition text-sm shadow-sm">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
                   Call Now
@@ -148,6 +187,29 @@ export default function ProviderPage() {
               📤 Share on WhatsApp
             </a>
           </div>
+
+          {similar.length > 0 && (
+            <div className="px-6 pb-6">
+              <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">Similar Providers</h3>
+              <div className="space-y-2">
+                {similar.map(s => (
+                  <Link key={s._id} to={`/provider/${s.slug}`}
+                    className="flex items-center gap-3 p-3 rounded-xl border border-gray-100 hover:border-orange-200 hover:bg-orange-50 transition">
+                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-orange-400 to-pink-500 flex items-center justify-center text-white font-bold shrink-0">
+                      {(s.businessName || s.name)[0]}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-gray-900 truncate">{s.businessName || s.name}</p>
+                      <p className="text-xs text-gray-400">{s.district || s.city}{s.experience ? ` · ${s.experience} yrs` : ''}</p>
+                    </div>
+                    {s.averageRating > 0 && <span className="text-yellow-500 text-xs font-bold">{s.averageRating.toFixed(1)} ★</span>}
+                    <svg className="w-4 h-4 text-gray-300 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"/></svg>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div className="px-6 pb-6 flex justify-center">
             <div className="bg-white rounded-xl border border-gray-100 p-4 shadow-sm text-center">
               <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">QR Code</p>

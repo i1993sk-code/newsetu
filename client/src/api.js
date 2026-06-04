@@ -12,4 +12,6 @@ export const api = {
   search: `${API_BASE}/api/provider/search`,
   deleteProfile: `${API_BASE}/api/provider/delete-profile`,
   report: (slug) => `${API_BASE}/api/provider/report/${slug}`,
+  trackCall: (slug) => `${API_BASE}/api/provider/track-call/${slug}`,
+  similarProviders: (category, exclude) => `${API_BASE}/api/provider/similar/${category}?exclude=${exclude}`,
 };
